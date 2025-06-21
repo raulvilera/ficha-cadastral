@@ -666,40 +666,66 @@
                     </div>
                     
                     <div class="form-row">
-                        <div class="form-group full">
-                            <label for="pai" class="required">NOME DO PAI</label>
-                            <input type="text" id="pai" name="pai" required>
+                        <div class="form-group medium">
+                            <label for="nome_mae" class="required">NOME DA MÃE</label>
+                            <input type="text" id="nome_mae" name="nome_mae" required>
+                        </div>
+                        
+                        <div class="form-group medium">
+                            <label for="nome_pai">NOME DO PAI</label>
+                            <input type="text" id="nome_pai" name="nome_pai">
                         </div>
                     </div>
                     
                     <div class="form-row">
-                        <div class="form-group full">
-                            <label for="mae" class="required">NOME DA MÃE</label>
-                            <input type="text" id="mae" name="mae" required>
+                        <div class="form-group small">
+                            <label for="estado_civil" class="required">ESTADO CIVIL</label>
+                            <select id="estado_civil" name="estado_civil" required>
+                                <option value="">Selecione</option>
+                                <option value="solteiro">Solteiro(a)</option>
+                                <option value="casado">Casado(a)</option>
+                                <option value="divorciado">Divorciado(a)</option>
+                                <option value="viuvo">Viúvo(a)</option>
+                                <option value="separado">Separado(a)</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group small">
+                            <label for="genero" class="required">GÊNERO</label>
+                            <select id="genero" name="genero" required>
+                                <option value="">Selecione</option>
+                                <option value="masculino">Masculino</option>
+                                <option value="feminino">Feminino</option>
+                                <option value="nao_informar">Prefiro não informar</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group small">
+                            <label for="grau_instrucao" class="required">GRAU DE INSTRUÇÃO</label>
+                            <select id="grau_instrucao" name="grau_instrucao" required>
+                                <option value="">Selecione</option>
+                                <option value="fundamental_incompleto">Fundamental Incompleto</option>
+                                <option value="fundamental_completo">Fundamental Completo</option>
+                                <option value="medio_incompleto">Médio Incompleto</option>
+                                <option value="medio_completo">Médio Completo</option>
+                                <option value="superior_incompleto">Superior Incompleto</option>
+                                <option value="superior_completo">Superior Completo</option>
+                                <option value="pos_graduacao">Pós-graduação</option>
+                                <option value="mestrado">Mestrado</option>
+                                <option value="doutorado">Doutorado</option>
+                            </select>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Endereço -->
+                <!-- Contato -->
                 <div class="form-section">
-                    <h2 class="section-title"><i class="fas fa-home"></i> ENDEREÇO</h2>
+                    <h2 class="section-title"><i class="fas fa-phone-alt"></i> CONTATO</h2>
                     
                     <div class="form-row">
                         <div class="form-group full">
                             <label for="endereco" class="required">ENDEREÇO COMPLETO</label>
-                            <input type="text" id="endereco" name="endereco" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group medium">
-                            <label for="bairro" class="required">BAIRRO</label>
-                            <input type="text" id="bairro" name="bairro" required>
-                        </div>
-                        
-                        <div class="form-group small">
-                            <label for="cep" class="required">CEP</label>
-                            <input type="text" id="cep" name="cep" placeholder="00000-000" required>
+                            <input type="text" id="endereco" name="endereco" placeholder="Rua, número, bairro" required>
                         </div>
                     </div>
                     
@@ -742,12 +768,17 @@
                                 <option value="TO">TO</option>
                             </select>
                         </div>
+                        
+                        <div class="form-group small">
+                            <label for="cep" class="required">CEP</label>
+                            <input type="text" id="cep" name="cep" placeholder="00000-000" required>
+                        </div>
                     </div>
                     
                     <div class="form-row">
                         <div class="form-group small">
-                            <label for="telefone">TELEFONE</label>
-                            <input type="tel" id="telefone" name="telefone" placeholder="(00) 0000-0000">
+                            <label for="telefone" class="required">TELEFONE</label>
+                            <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
                         </div>
                         
                         <div class="form-group small">
@@ -755,372 +786,441 @@
                             <input type="tel" id="celular" name="celular" placeholder="(00) 00000-0000" required>
                         </div>
                         
-                        <div class="form-group medium">
+                        <div class="form-group small">
                             <label for="email" class="required">E-MAIL</label>
                             <input type="email" id="email" name="email" required>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Dados Familiares -->
+                <!-- Dados Bancários -->
                 <div class="form-section">
-                    <h2 class="section-title"><i class="fas fa-users"></i> DADOS FAMILIARES</h2>
+                    <h2 class="section-title"><i class="fas fa-piggy-bank"></i> DADOS BANCÁRIOS</h2>
+                    
+                    <div class="form-row">
+                        <div class="form-group medium">
+                            <label for="banco" class="required">BANCO</label>
+                            <select id="banco" name="banco" required>
+                                <option value="">Selecione o banco</option>
+                                <option value="001">Banco do Brasil</option>
+                                <option value="033">Santander</option>
+                                <option value="237">Bradesco</option>
+                                <option value="341">Itaú</option>
+                                <option value="104">Caixa Econômica Federal</option>
+                                <option value="212">Original</option>
+                                <option value="077">Inter</option>
+                                <option value="422">Safra</option>
+                                <option value="655">Votorantim</option>
+                                <option value="260">Nubank</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group small">
+                            <label for="agencia" class="required">AGÊNCIA</label>
+                            <input type="text" id="agencia" name="agencia" required>
+                        </div>
+                        
+                        <div class="form-group small">
+                            <label for="conta" class="required">CONTA</label>
+                            <input type="text" id="conta" name="conta" required>
+                        </div>
+                    </div>
                     
                     <div class="form-row">
                         <div class="form-group small">
-                            <label for="estado_civil" class="required">ESTADO CIVIL</label>
-                            <select id="estado_civil" name="estado_civil" required>
+                            <label for="tipo_conta" class="required">TIPO DE CONTA</label>
+                            <select id="tipo_conta" name="tipo_conta" required>
                                 <option value="">Selecione</option>
-                                <option value="solteiro">Solteiro(a)</option>
-                                <option value="casado">Casado(a)</option>
-                                <option value="divorciado">Divorciado(a)</option>
-                                <option value="viuvo">Viúvo(a)</option>
+                                <option value="corrente">Corrente</option>
+                                <option value="poupanca">Poupança</option>
+                                <option value="salario">Salário</option>
                             </select>
                         </div>
                         
                         <div class="form-group medium">
-                            <label for="conjuge">NOME DO CÔNJUGE</label>
-                            <input type="text" id="conjuge" name="conjuge">
+                            <label for="titular" class="required">TITULAR DA CONTA</label>
+                            <input type="text" id="titular" name="titular" required>
                         </div>
                         
                         <div class="form-group small">
-                            <label for="cpf_conjuge">CPF DO CÔNJUGE</label>
-                            <input type="text" id="cpf_conjuge" name="cpf_conjuge" placeholder="000.000.000-00">
+                            <label for="cpf_titular" class="required">CPF DO TITULAR</label>
+                            <input type="text" id="cpf_titular" name="cpf_titular" placeholder="000.000.000-00" required>
                         </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group full">
-                            <label>DEPENDENTES (FILHOS)</label>
-                            <button type="button" id="btnAddDependente" class="btn-add">
-                                <i class="fas fa-plus"></i> Adicionar Dependente
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div id="dependentesContainer">
-                        <!-- Dependentes serão adicionados aqui -->
-                    </div>
-                    
-                    <div class="instructions">
-                        <p><i class="fas fa-exclamation-circle"></i> SE TIVER FILHOS MENORES DE 14 ANOS APRESENTAR CERTIDÃO DE NASCIMENTO E CPF.</p>
                     </div>
                 </div>
                 
-                <!-- Dados Profissionais -->
+                <!-- Dependentes -->
                 <div class="form-section">
-                    <h2 class="section-title"><i class="fas fa-briefcase"></i> DADOS PROFISSIONAIS</h2>
+                    <h2 class="section-title"><i class="fas fa-users"></i> DEPENDENTES</h2>
                     
-                    <div class="form-row">
-                        <div class="form-group medium">
-                            <label for="escolaridade" class="required">ESCOLARIDADE</label>
-                            <select id="escolaridade" name="escolaridade" required>
-                                <option value="">Selecione</option>
-                                <option value="fundamental">Fundamental Incompleto</option>
-                                <option value="fundamental_completo">Fundamental Completo</option>
-                                <option value="medio">Médio Incompleto</option>
-                                <option value="medio_completo">Médio Completo</option>
-                                <option value="superior">Superior Incompleto</option>
-                                <option value="superior_completo">Superior Completo</option>
-                                <option value="pos">Pós-graduação</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group small">
-                            <label for="carga_horaria" class="required">CARGA HORÁRIA</label>
-                            <select id="carga_horaria" name="carga_horaria" required>
-                                <option value="">Selecione</option>
-                                <option value="30">30 horas semanais</option>
-                                <option value="40">40 horas semanais</option>
-                                <option value="44">44 horas semanais</option>
-                            </select>
-                        </div>
-                    </div>
+                    <button type="button" class="btn-add" id="addDependente">
+                        <i class="fas fa-plus-circle"></i> ADICIONAR DEPENDENTE
+                    </button>
                     
-                    <div class="form-row">
-                        <div class="form-group small date-group">
-                            <label for="admissao" class="required">DATA DE ADMISSÃO</label>
-                            <input type="date" id="admissao" name="admissao" required>
-                        </div>
-                        
-                        <div class="form-group medium">
-                            <label for="funcao" class="required">FUNÇÃO</label>
-                            <input type="text" id="funcao" name="funcao" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group full">
-                            <label class="required">HORÁRIO DE TRABALHO</label>
-                            <div class="time-group" id="horarioTrabalho">
-                                <div class="time-input-wrapper">
-                                    <label for="entrada">Entrada</label>
-                                    <input type="time" id="entrada" name="entrada" required>
+                    <div id="dependentesContainer">
+                        <div class="dependente-item">
+                            <div class="dependente-header">
+                                <div class="dependente-title">DEPENDENTE #1</div>
+                                <button type="button" class="btn-remove removeDependente">
+                                    <i class="fas fa-trash"></i> REMOVER
+                                </button>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group medium">
+                                    <label for="nome_dependente" class="required">NOME COMPLETO</label>
+                                    <input type="text" name="nome_dependente[]" required>
                                 </div>
-                                <div class="time-separator">às</div>
-                                <div class="time-input-wrapper">
-                                    <label for="inicio_almoco">Início Almoço</label>
-                                    <input type="time" id="inicio_almoco" name="inicio_almoco" required>
+                                
+                                <div class="form-group small">
+                                    <label for="cpf_dependente" class="required">CPF</label>
+                                    <input type="text" name="cpf_dependente[]" placeholder="000.000.000-00" required>
                                 </div>
-                                <div class="time-separator">às</div>
-                                <div class="time-input-wrapper">
-                                    <label for="fim_almoco">Fim Almoço</label>
-                                    <input type="time" id="fim_almoco" name="fim_almoco" required>
+                                
+                                <div class="form-group small date-group">
+                                    <label for="nascimento_dependente" class="required">DATA NASC.</label>
+                                    <input type="date" name="nascimento_dependente[]" required>
                                 </div>
-                                <div class="time-separator">às</div>
-                                <div class="time-input-wrapper">
-                                    <label for="saida">Saída</label>
-                                    <input type="time" id="saida" name="saida" required>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group small">
+                                    <label for="parentesco" class="required">PARENTESCO</label>
+                                    <select name="parentesco[]" required>
+                                        <option value="">Selecione</option>
+                                        <option value="filho">Filho(a)</option>
+                                        <option value="conjuge">Cônjuge</option>
+                                        <option value="pai">Pai</option>
+                                        <option value="mae">Mãe</option>
+                                        <option value="outro">Outro</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group medium">
+                                    <label for="escolaridade">ESCOLARIDADE</label>
+                                    <select name="escolaridade[]">
+                                        <option value="">Selecione</option>
+                                        <option value="fundamental_incompleto">Fundamental Incompleto</option>
+                                        <option value="fundamental_completo">Fundamental Completo</option>
+                                        <option value="medio_incompleto">Médio Incompleto</option>
+                                        <option value="medio_completo">Médio Completo</option>
+                                        <option value="superior_incompleto">Superior Incompleto</option>
+                                        <option value="superior_completo">Superior Completo</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
-                    <div class="instructions">
-                        <p><i class="fas fa-exclamation-circle"></i> ENVIAR UMA CÓPIA DO ÚLTIMO HOLERITE</p>
-                    </div>
                 </div>
                 
-                <!-- Upload de Documentos -->
+                <!-- Documentos -->
                 <div class="form-section">
-                    <h2 class="section-title"><i class="fas fa-file-upload"></i> DOCUMENTOS</h2>
+                    <h2 class="section-title"><i class="fas fa-file-alt"></i> DOCUMENTOS</h2>
+                    
+                    <div class="instructions">
+                        <i class="fas fa-info-circle"></i> Anexe cópias legíveis dos documentos solicitados. Formatos aceitos: PDF, JPG, PNG (tamanho máximo: 5MB por arquivo).
+                    </div>
                     
                     <div class="upload-container">
                         <div class="upload-header">
-                            <h3>Documentos necessários</h3>
-                            <button type="button" class="upload-button" id="btnUpload">
-                                <i class="fas fa-folder-open"></i> Selecionar Documentos
+                            <h3>Documentos obrigatórios</h3>
+                            <button type="button" class="upload-button" id="uploadDocumentos">
+                                <i class="fas fa-cloud-upload-alt"></i> SELECIONAR ARQUIVOS
                             </button>
-                            <input type="file" id="fileInput" multiple style="display: none;">
                         </div>
                         
-                        <div class="upload-area" id="uploadArea">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <h3>Arraste e solte seus documentos aqui</h3>
-                            <p>Formatos aceitos: PDF, JPG, PNG, DOC, DOCX (Tamanho máximo: 5MB)</p>
+                        <div class="upload-area" id="dropArea">
+                            <i class="fas fa-file-upload"></i>
+                            <h3>Arraste e solte os arquivos aqui</h3>
+                            <p>ou clique para selecionar</p>
                         </div>
                         
                         <div class="file-list" id="fileList">
-                            <!-- Lista de documentos será inserida aqui -->
+                            <div class="file-item">
+                                <div class="file-info">
+                                    <i class="fas fa-file-pdf file-icon"></i>
+                                    <div>
+                                        <div class="file-name">RG.pdf</div>
+                                        <div class="file-size">1.2 MB</div>
+                                    </div>
+                                </div>
+                                <button class="file-remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                            <div class="file-item">
+                                <div class="file-info">
+                                    <i class="fas fa-file-image file-icon"></i>
+                                    <div>
+                                        <div class="file-name">CPF.jpg</div>
+                                        <div class="file-size">0.8 MB</div>
+                                    </div>
+                                </div>
+                                <button class="file-remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <!-- Observações -->
-                <div class="form-section">
-                    <h2 class="section-title"><i class="fas fa-comment-alt"></i> OBSERVAÇÕES</h2>
                     
-                    <div class="form-row">
-                        <div class="form-group full">
-                            <label for="observacoes">INFORMAÇÕES ADICIONAIS</label>
-                            <textarea id="observacoes" name="observacoes" rows="4" placeholder="Informações relevantes sobre o funcionário..."></textarea>
+                    <div class="progress-container" id="progressContainer">
+                        <p>Enviando documentos...</p>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
                         </div>
+                        <p id="progressText">0% completo</p>
                     </div>
                 </div>
                 
-                <!-- Barra de progresso -->
-                <div class="progress-container" id="progressContainer">
-                    <p>Gerando PDF e preparando envio...</p>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
-                    </div>
-                    <p id="progressText">0%</p>
-                </div>
-                
+                <!-- Botões de ação -->
                 <div class="btn-group">
-                    <button type="button" class="btn btn-whatsapp" id="btnEnviarWhatsapp">
-                        <i class="fab fa-whatsapp"></i> Enviar Ficha via WhatsApp
+                    <button type="button" class="btn btn-whatsapp" id="btnWhatsapp">
+                        <i class="fab fa-whatsapp"></i> ENVIAR VIA WHATSAPP
                     </button>
                 </div>
             </form>
             
             <div class="footer-note">
-                <p><i class="fas fa-exclamation-triangle"></i> TODOS OS DADOS SÃO OBRIGATÓRIOS NA FICHA CADASTRAL.</p>
-                <p>ENVIAR A FICHA NO WHATSAPP: (17) 99669-7271</p>
+                <i class="fas fa-exclamation-triangle"></i> Todos os campos marcados com * são obrigatórios. Informações incorretas podem invalidar o cadastro.
             </div>
         </div>
     </div>
 
     <script>
-        // Gerenciamento de upload de arquivos
-        const uploadArea = document.getElementById('uploadArea');
-        const fileInput = document.getElementById('fileInput');
-        const btnUpload = document.getElementById('btnUpload');
-        const fileList = document.getElementById('fileList');
-        const progressContainer = document.getElementById('progressContainer');
-        const progressFill = document.getElementById('progressFill');
-        const progressText = document.getElementById('progressText');
-        const horarioTrabalho = document.getElementById('horarioTrabalho');
-        const dependentesContainer = document.getElementById('dependentesContainer');
-        const btnAddDependente = document.getElementById('btnAddDependente');
-        
         // Contador para dependentes
-        let dependenteCount = 0;
+        let dependenteCounter = 1;
         
-        // Função para adicionar novo dependente
-        function adicionarDependente() {
-            dependenteCount++;
-            const dependenteItem = document.createElement('div');
-            dependenteItem.className = 'dependente-item';
-            dependenteItem.innerHTML = `
-                <div class="dependente-header">
-                    <div class="dependente-title">Dependente ${dependenteCount}</div>
-                    <button type="button" class="btn-remove remove-dependente">
-                        <i class="fas fa-trash"></i> Remover
-                    </button>
-                </div>
-                <div class="form-row">
-                    <div class="form-group medium">
-                        <label class="required">Nome Completo</label>
-                        <input type="text" name="dependente_nome[]" required>
-                    </div>
-                    <div class="form-group small">
-                        <label class="required">Idade</label>
-                        <input type="number" name="dependente_idade[]" min="0" max="120" required>
-                    </div>
-                    <div class="form-group xsmall">
-                        <label class="required">Sexo</label>
-                        <select name="dependente_sexo[]" required>
-                            <option value="">Selecione</option>
-                            <option value="masculino">Masculino</option>
-                            <option value="feminino">Feminino</option>
-                        </select>
-                    </div>
-                    <div class="form-group small">
-                        <label class="required">CPF</label>
-                        <input type="text" name="dependente_cpf[]" placeholder="000.000.000-00" required>
-                    </div>
-                </div>
-            `;
+        // Adicionar novo dependente
+        document.getElementById('addDependente').addEventListener('click', function() {
+            dependenteCounter++;
             
-            dependentesContainer.appendChild(dependenteItem);
+            const dependentesContainer = document.getElementById('dependentesContainer');
+            const newDependente = document.querySelector('.dependente-item').cloneNode(true);
             
-            // Adicionar evento de remoção
-            const removeBtn = dependenteItem.querySelector('.remove-dependente');
-            removeBtn.addEventListener('click', function() {
-                dependenteItem.remove();
+            // Atualizar título
+            newDependente.querySelector('.dependente-title').textContent = `DEPENDENTE #${dependenteCounter}`;
+            
+            // Limpar campos
+            const inputs = newDependente.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                if (input.type !== 'button') input.value = '';
             });
             
-            // Adicionar máscara de CPF para o novo campo
-            const cpfInput = dependenteItem.querySelector('input[name="dependente_cpf[]"]');
-            cpfInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-                if (value.length > 11) value = value.substring(0, 11);
-                
-                if (value.length > 9) {
-                    value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-                } else if (value.length > 6) {
-                    value = value.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
-                } else if (value.length > 3) {
-                    value = value.replace(/(\d{3})(\d{1,3})/, '$1.$2');
+            // Adicionar botão de remoção funcional
+            newDependente.querySelector('.removeDependente').addEventListener('click', function() {
+                if (dependenteCounter > 1) {
+                    newDependente.remove();
+                    dependenteCounter--;
+                    updateDependenteNumbers();
+                } else {
+                    alert('É necessário ter pelo menos um dependente cadastrado.');
                 }
-                e.target.value = value;
+            });
+            
+            dependentesContainer.appendChild(newDependente);
+            updateDependenteNumbers();
+        });
+        
+        // Atualizar números dos dependentes
+        function updateDependenteNumbers() {
+            const dependenteItems = document.querySelectorAll('.dependente-item');
+            dependenteItems.forEach((item, index) => {
+                item.querySelector('.dependente-title').textContent = `DEPENDENTE #${index + 1}`;
             });
         }
         
-        // Botão para adicionar dependente
-        btnAddDependente.addEventListener('click', adicionarDependente);
+        // Remover dependentes
+        document.querySelectorAll('.removeDependente').forEach(button => {
+            button.addEventListener('click', function() {
+                if (dependenteCounter > 1) {
+                    this.closest('.dependente-item').remove();
+                    dependenteCounter--;
+                    updateDependenteNumbers();
+                } else {
+                    alert('É necessário ter pelo menos um dependente cadastrado.');
+                }
+            });
+        });
         
-        // Botão de upload
-        btnUpload.addEventListener('click', () => {
+        // Upload de documentos
+        const dropArea = document.getElementById('dropArea');
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.multiple = true;
+        fileInput.style.display = 'none';
+        
+        document.getElementById('uploadDocumentos').addEventListener('click', function() {
             fileInput.click();
         });
         
-        // Área de upload
-        uploadArea.addEventListener('click', () => {
+        dropArea.addEventListener('click', function() {
             fileInput.click();
         });
         
-        uploadArea.addEventListener('dragover', (e) => {
+        fileInput.addEventListener('change', handleFiles);
+        
+        // Arrastar e soltar
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
             e.preventDefault();
-            uploadArea.style.borderColor = '#1a2980';
-            uploadArea.style.backgroundColor = '#e9f7fe';
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropArea.addEventListener(eventName, highlight, false);
         });
         
-        uploadArea.addEventListener('dragleave', () => {
-            uploadArea.style.borderColor = '#ced4da';
-            uploadArea.style.backgroundColor = '#f8f9fa';
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropArea.addEventListener(eventName, unhighlight, false);
         });
         
-        uploadArea.addEventListener('drop', (e) => {
-            e.preventDefault();
-            uploadArea.style.borderColor = '#ced4da';
-            uploadArea.style.backgroundColor = '#f8f9fa';
-            
-            if (e.dataTransfer.files.length) {
-                handleFiles(e.dataTransfer.files);
-            }
-        });
+        function highlight() {
+            dropArea.style.borderColor = '#1a2980';
+            dropArea.style.backgroundColor = '#e9f7fe';
+        }
         
-        fileInput.addEventListener('change', () => {
-            if (fileInput.files.length) {
-                handleFiles(fileInput.files);
-            }
-        });
+        function unhighlight() {
+            dropArea.style.borderColor = '#ced4da';
+            dropArea.style.backgroundColor = '#f8f9fa';
+        }
+        
+        dropArea.addEventListener('drop', handleDrop, false);
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            handleFiles(files);
+        }
         
         function handleFiles(files) {
+            const fileList = document.getElementById('fileList');
+            
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
                 
-                // Verificar tamanho do arquivo (máximo 5MB)
+                // Verificar tamanho do arquivo (5MB)
                 if (file.size > 5 * 1024 * 1024) {
-                    alert(`O arquivo ${file.name} excede o tamanho máximo permitido de 5MB.`);
+                    alert(`O arquivo ${file.name} excede o tamanho máximo de 5MB.`);
                     continue;
                 }
                 
-                // Verificar tipo de arquivo (incluindo documentos do Word)
-                const validTypes = [
-                    'image/jpeg', 
-                    'image/png', 
-                    'application/pdf',
-                    'application/msword',
-                    'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-                ];
-                
+                // Verificar tipo de arquivo
+                const validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
                 if (!validTypes.includes(file.type)) {
-                    alert(`O arquivo ${file.name} não é um tipo suportado (JPEG, PNG, PDF, DOC, DOCX).`);
+                    alert(`O arquivo ${file.name} não é um tipo válido (PDF, JPG, PNG).`);
                     continue;
                 }
                 
-                // Adicionar arquivo à lista
+                // Criar elemento de arquivo
                 const fileItem = document.createElement('div');
                 fileItem.className = 'file-item';
                 
-                // Determinar ícone pelo tipo de arquivo
-                let fileIcon = 'fa-file';
-                if (file.type.includes('image')) fileIcon = 'fa-file-image';
-                else if (file.type.includes('pdf')) fileIcon = 'fa-file-pdf';
-                else if (file.type.includes('word')) fileIcon = 'fa-file-word';
+                // Obter ícone baseado no tipo
+                let iconClass = 'fas fa-file';
+                if (file.type === 'application/pdf') {
+                    iconClass = 'fas fa-file-pdf';
+                } else if (file.type.includes('image')) {
+                    iconClass = 'fas fa-file-image';
+                }
+                
+                // Formatar tamanho do arquivo
+                const fileSize = (file.size / 1024 / 1024).toFixed(1);
                 
                 fileItem.innerHTML = `
                     <div class="file-info">
-                        <i class="fas ${fileIcon} file-icon"></i>
+                        <i class="${iconClass} file-icon"></i>
                         <div>
-                            <div>${file.name}</div>
-                            <div style="font-size: 13px; color: #666;">${formatFileSize(file.size)}</div>
+                            <div class="file-name">${file.name}</div>
+                            <div class="file-size">${fileSize} MB</div>
                         </div>
                     </div>
-                    <button class="file-remove"><i class="fas fa-times"></i></button>
+                    <button class="file-remove">
+                        <i class="fas fa-times"></i>
+                    </button>
                 `;
                 
-                fileList.appendChild(fileItem);
-                
                 // Adicionar evento de remoção
-                fileItem.querySelector('.file-remove').addEventListener('click', () => {
+                fileItem.querySelector('.file-remove').addEventListener('click', function() {
                     fileItem.remove();
                 });
+                
+                fileList.appendChild(fileItem);
             }
         }
         
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        // Remover arquivos existentes
+        document.querySelectorAll('.file-remove').forEach(button => {
+            button.addEventListener('click', function() {
+                this.closest('.file-item').remove();
+            });
+        });
+        
+        // Enviar via WhatsApp
+        document.getElementById('btnWhatsapp').addEventListener('click', function() {
+            if (validateForm()) {
+                // Simular envio
+                const progressContainer = document.getElementById('progressContainer');
+                const progressFill = document.getElementById('progressFill');
+                const progressText = document.getElementById('progressText');
+                
+                progressContainer.style.display = 'block';
+                
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += 5;
+                    progressFill.style.width = `${progress}%`;
+                    progressText.textContent = `${progress}% completo`;
+                    
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        
+                        // Simular geração de PDF
+                        setTimeout(() => {
+                            // Simular envio via WhatsApp
+                            const phone = "551736323016";
+                            const message = encodeURIComponent("Segue a ficha cadastral do funcionário em anexo.");
+                            const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
+                            
+                            // Abrir WhatsApp
+                            window.open(whatsappUrl, '_blank');
+                            
+                            // Mostrar confirmação
+                            alert('Formulário enviado com sucesso! O PDF será enviado via WhatsApp.');
+                            progressContainer.style.display = 'none';
+                            progressFill.style.width = '0%';
+                            progressText.textContent = '0% completo';
+                        }, 1000);
+                    }
+                }, 100);
+            } else {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+            }
+        });
+        
+        // Validação do formulário
+        function validateForm() {
+            const requiredFields = document.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    isValid = false;
+                    field.style.borderColor = '#e53935';
+                    
+                    // Remover destaque após 2 segundos
+                    setTimeout(() => {
+                        field.style.borderColor = '#ced4da';
+                    }, 2000);
+                }
+            });
+            
+            return isValid;
         }
         
-        // Máscaras para campos
+        // Formatação de campos
         document.getElementById('cpf').addEventListener('input', function(e) {
             let value = e.target.value.replace(/\D/g, '');
             if (value.length > 11) value = value.substring(0, 11);
@@ -1128,25 +1228,11 @@
             if (value.length > 9) {
                 value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
             } else if (value.length > 6) {
-                value = value.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
+                value = value.replace(/(\d{3})(\d{3})(\d+)/, '$1.$2.$3');
             } else if (value.length > 3) {
-                value = value.replace(/(\d{3})(\d{1,3})/, '$1.$2');
+                value = value.replace(/(\d{3})(\d+)/, '$1.$2');
             }
-            e.target.value = value;
-        });
-        
-        // Máscara para CPF do cônjuge
-        document.getElementById('cpf_conjuge').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 11) value = value.substring(0, 11);
             
-            if (value.length > 9) {
-                value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-            } else if (value.length > 6) {
-                value = value.replace(/(\d{3})(\d{3})(\d{1,3})/, '$1.$2.$3');
-            } else if (value.length > 3) {
-                value = value.replace(/(\d{3})(\d{1,3})/, '$1.$2');
-            }
             e.target.value = value;
         });
         
@@ -1155,8 +1241,24 @@
             if (value.length > 8) value = value.substring(0, 8);
             
             if (value.length > 5) {
-                value = value.replace(/(\d{5})(\d{1,3})/, '$1-$2');
+                value = value.replace(/(\d{5})(\d{3})/, '$1-$2');
             }
+            
+            e.target.value = value;
+        });
+        
+        document.getElementById('telefone').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.substring(0, 11);
+            
+            if (value.length > 10) {
+                value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+            } else if (value.length > 6) {
+                value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+            } else if (value.length > 2) {
+                value = value.replace(/(\d{2})(\d+)/, '($1) $2');
+            }
+            
             e.target.value = value;
         });
         
@@ -1167,257 +1269,16 @@
             if (value.length > 10) {
                 value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
             } else if (value.length > 6) {
-                value = value.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+                value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
             } else if (value.length > 2) {
-                value = value.replace(/(\d{2})(\d{0,5})/, '($1) $2');
-            } else if (value.length > 0) {
-                value = value.replace(/(\d{0,2})/, '($1');
+                value = value.replace(/(\d{2})(\d+)/, '($1) $2');
             }
+            
             e.target.value = value;
         });
         
-        // Funcionalidade para campos de horário
-        horarioTrabalho.addEventListener('click', (e) => {
-            // Verificar se o clique foi em um elemento que não é o input
-            if (!e.target.matches('input[type="time"]')) {
-                // Encontrar o input de tempo mais próximo
-                const wrapper = e.target.closest('.time-input-wrapper');
-                if (wrapper) {
-                    const input = wrapper.querySelector('input[type="time"]');
-                    if (input) {
-                        input.focus();
-                        // Mostrar o seletor de horário
-                        if (input.showPicker) {
-                            input.showPicker();
-                        }
-                    }
-                }
-            }
-        });
-        
-        // Adicionar evento para campos de data
-        document.querySelectorAll('.date-group').forEach(group => {
-            group.addEventListener('click', (e) => {
-                // Se o clique não foi diretamente no input
-                if (!e.target.matches('input[type="date"]')) {
-                    const input = group.querySelector('input[type="date"]');
-                    if (input) {
-                        input.focus();
-                        if (input.showPicker) {
-                            input.showPicker();
-                        }
-                    }
-                }
-            });
-        });
-        
-        // Função para atualizar a barra de progresso
-        function updateProgress(percent) {
-            progressFill.style.width = percent + '%';
-            progressText.textContent = percent + '%';
-        }
-        
-        // Enviar via WhatsApp
-        document.getElementById('btnEnviarWhatsapp').addEventListener('click', async function() {
-            const form = document.getElementById('cadastroForm');
-            
-            // Validar campos obrigatórios
-            let isValid = true;
-            const requiredFields = form.querySelectorAll('[required]');
-            
-            requiredFields.forEach(field => {
-                if (!field.value.trim()) {
-                    isValid = false;
-                    field.style.borderColor = '#e53935';
-                    
-                    // Remover destaque após um tempo
-                    setTimeout(() => {
-                        field.style.borderColor = '';
-                    }, 3000);
-                }
-            });
-            
-            // Validar dependentes
-            const dependentes = dependentesContainer.querySelectorAll('.dependente-item');
-            if (dependentes.length > 0) {
-                dependentes.forEach(dependente => {
-                    const inputs = dependente.querySelectorAll('input[required], select[required]');
-                    inputs.forEach(input => {
-                        if (!input.value.trim()) {
-                            isValid = false;
-                            input.style.borderColor = '#e53935';
-                            
-                            setTimeout(() => {
-                                input.style.borderColor = '';
-                            }, 3000);
-                        }
-                    });
-                });
-            }
-            
-            if (!isValid) {
-                alert('Por favor, preencha todos os campos obrigatórios antes de enviar.');
-                return;
-            }
-            
-            // Mostrar barra de progresso
-            progressContainer.style.display = 'block';
-            updateProgress(10);
-            
-            // Criar PDF
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            
-            // Adicionar cabeçalho
-            doc.setFontSize(16);
-            doc.setFont('helvetica', 'bold');
-            doc.text('FICHA DE CADASTRO DE FUNCIONÁRIO', 105, 15, { align: 'center' });
-            
-            doc.setFontSize(10);
-            doc.setFont('helvetica', 'normal');
-            doc.text('TELEFONE: (17) 3632 - 3016', 20, 25);
-            doc.text('RUA 5, 2245, CENTRO - JALES SP', 105, 25, { align: 'center' });
-            doc.text('CNPJ: 22.485.848/0001-90', 180, 25, { align: 'right' });
-            
-            doc.setFontSize(12);
-            doc.setFont('helvetica', 'bold');
-            doc.text('DADOS DA EMPRESA', 105, 35, { align: 'center' });
-            updateProgress(20);
-            
-            // Adicionar dados do formulário
-            let y = 45;
-            const addSection = (title, fields) => {
-                doc.setFontSize(12);
-                doc.setFont('helvetica', 'bold');
-                doc.text(title, 20, y);
-                y += 5;
-                
-                doc.setFontSize(10);
-                doc.setFont('helvetica', 'normal');
-                
-                for (const [label, value] of fields) {
-                    if (y > 280) {
-                        doc.addPage();
-                        y = 20;
-                    }
-                    
-                    doc.text(`${label}: ${value}`, 25, y);
-                    y += 7;
-                }
-                
-                y += 5;
-            };
-            
-            // Dados pessoais
-            const dadosPessoais = [
-                ['Nome Completo', document.getElementById('nome').value],
-                ['CPF', document.getElementById('cpf').value],
-                ['RG', document.getElementById('rg').value],
-                ['Título de Eleitor', document.getElementById('titulo').value],
-                ['Carteira de Trabalho', document.getElementById('ctps').value],
-                ['PIS', document.getElementById('pis').value],
-                ['Cor/Raça', document.getElementById('cor').value],
-                ['Data de Nascimento', document.getElementById('nascimento').value],
-                ['Cidade de Nascimento', document.getElementById('cidade_nasc').value],
-                ['Estado de Nascimento', document.getElementById('estado_nasc').value],
-                ['Nome do Pai', document.getElementById('pai').value],
-                ['Nome da Mãe', document.getElementById('mae').value]
-            ];
-            
-            addSection('DADOS PESSOAIS', dadosPessoais);
-            updateProgress(40);
-            
-            // Endereço
-            const endereco = [
-                ['Endereço', document.getElementById('endereco').value],
-                ['Bairro', document.getElementById('bairro').value],
-                ['CEP', document.getElementById('cep').value],
-                ['Cidade', document.getElementById('cidade').value],
-                ['Estado', document.getElementById('estado').value],
-                ['Telefone', document.getElementById('telefone').value || 'N/A'],
-                ['Celular', document.getElementById('celular').value],
-                ['E-mail', document.getElementById('email').value]
-            ];
-            
-            addSection('ENDEREÇO', endereco);
-            updateProgress(60);
-            
-            // Dados familiares
-            const dadosFamiliares = [
-                ['Estado Civil', document.getElementById('estado_civil').value],
-                ['Nome do Cônjuge', document.getElementById('conjuge').value || 'N/A'],
-                ['CPF do Cônjuge', document.getElementById('cpf_conjuge').value || 'N/A'],
-            ];
-            
-            // Adicionar dependentes
-            const dependentes = dependentesContainer.querySelectorAll('.dependente-item');
-            dependentes.forEach((dep, index) => {
-                const nome = dep.querySelector('input[name="dependente_nome[]"]').value;
-                const idade = dep.querySelector('input[name="dependente_idade[]"]').value;
-                const sexo = dep.querySelector('select[name="dependente_sexo[]"]').value;
-                const cpf = dep.querySelector('input[name="dependente_cpf[]"]').value;
-                
-                dadosFamiliares.push([`Dependente ${index+1}`, nome]);
-                dadosFamiliares.push([`Idade Dep. ${index+1}`, idade]);
-                dadosFamiliares.push([`Sexo Dep. ${index+1}`, sexo]);
-                dadosFamiliares.push([`CPF Dep. ${index+1}`, cpf]);
-            });
-            
-            addSection('DADOS FAMILIARES', dadosFamiliares);
-            updateProgress(80);
-            
-            // Dados profissionais
-            const dadosProfissionais = [
-                ['Escolaridade', document.getElementById('escolaridade').value],
-                ['Carga Horária', document.getElementById('carga_horaria').value],
-                ['Data de Admissão', document.getElementById('admissao').value],
-                ['Função', document.getElementById('funcao').value],
-                ['Horário de Entrada', document.getElementById('entrada').value],
-                ['Início Almoço', document.getElementById('inicio_almoco').value],
-                ['Fim Almoço', document.getElementById('fim_almoco').value],
-                ['Horário de Saída', document.getElementById('saida').value],
-                ['Observações', document.getElementById('observacoes').value || 'Nenhuma']
-            ];
-            
-            addSection('DADOS PROFISSIONAIS', dadosProfissionais);
-            updateProgress(90);
-            
-            // Salvar PDF temporariamente
-            const pdfBlob = doc.output('blob');
-            const pdfUrl = URL.createObjectURL(pdfBlob);
-            updateProgress(95);
-            
-            // Criar mensagem para WhatsApp
-            let message = "Nova Ficha Cadastral Recebida\n\n";
-            message += `*Nome:* ${document.getElementById('nome').value}\n`;
-            message += `*CPF:* ${document.getElementById('cpf').value}\n`;
-            message += `*Data de Admissão:* ${document.getElementById('admissao').value}\n`;
-            message += `*Função:* ${document.getElementById('funcao').value}\n\n`;
-            message += "Por favor, verifique o PDF anexo com todos os detalhes.";
-            
-            // Codificar mensagem para URL
-            const encodedMessage = encodeURIComponent(message);
-            
-            // Abrir WhatsApp com a mensagem
-            setTimeout(() => {
-                window.open(`https://wa.me/5517996697271?text=${encodedMessage}`, '_blank');
-                updateProgress(100);
-                
-                // Limpar formulário após envio
-                setTimeout(() => {
-                    form.reset();
-                    fileList.innerHTML = '';
-                    dependentesContainer.innerHTML = '';
-                    dependenteCount = 0;
-                    progressContainer.style.display = 'none';
-                    alert('Ficha enviada com sucesso! Obrigado.');
-                }, 1000);
-            }, 1000);
-        });
-        
-        // Inicializar campos com data atual para facilitar o teste
-        document.getElementById('nascimento').valueAsDate = new Date();
-        document.getElementById('admissao').valueAsDate = new Date();
+        // Inicializar campo de data com valor padrão
+        document.getElementById('nascimento').valueAsDate = new Date(1990, 0, 1);
     </script>
 </body>
 </html>
