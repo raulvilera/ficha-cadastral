@@ -505,6 +505,140 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
+        /* ESTILOS DO RECONHECIMENTO FACIAL */
+        .facial-recognition {
+            width: 100%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 1px solid #e0e0e0;
+            margin: 30px 0;
+        }
+        
+        .facial-recognition h3 {
+            margin-bottom: 15px;
+            color: #1a2980;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 18px;
+        }
+        
+        .facial-container {
+            position: relative;
+            margin-bottom: 15px;
+            height: 300px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        #video, #canvas {
+            width: 100%;
+            height: 100%;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+        }
+        
+        #video {
+            display: block;
+            background: #f8f9fa;
+        }
+        
+        #canvas {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        
+        .facial-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        #capture-btn, #retry-btn {
+            background: linear-gradient(to right, #1a2980, #26d0ce);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s;
+            font-size: 15px;
+            min-width: 180px;
+        }
+        
+        #capture-btn:hover, #retry-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        #capture-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        #retry-btn {
+            background: #ff9800;
+            display: none;
+        }
+        
+        .recognition-status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 14px;
+            text-align: center;
+        }
+        
+        .status-pending {
+            background-color: #fff9c4;
+            color: #f57f17;
+        }
+        
+        .status-success {
+            background-color: #c8e6c9;
+            color: #2e7d32;
+        }
+        
+        .status-error {
+            background-color: #ffcdd2;
+            color: #c62828;
+        }
+        
+        .recognition-result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            font-size: 14px;
+            text-align: center;
+            display: none;
+        }
+        
+        .recognition-result img {
+            max-width: 100%;
+            border-radius: 6px;
+            margin-top: 15px;
+            max-height: 200px;
+            border: 1px solid #ddd;
+        }
+        
+        .recognition-result p {
+            margin: 8px 0;
+        }
+        
         @media (max-width: 768px) {
             .form-group {
                 flex: 0 0 100% !important;
@@ -545,6 +679,21 @@
             
             .btn {
                 min-width: 100%;
+            margin-bottom: 10px;
+            }
+            
+            .facial-container {
+                height: 250px;
+            }
+            
+            .facial-controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            #capture-btn, #retry-btn {
+                width: 100%;
+                max-width: 300px;
             }
         }
     </style>
@@ -715,6 +864,35 @@
                                 <option value="doutorado">Doutorado</option>
                             </select>
                         </div>
+                    </div>
+                </div>
+                
+                <!-- RECONHECIMENTO FACIAL -->
+                <div class="facial-recognition">
+                    <h3><i class="fas fa-user-circle"></i> RECONHECIMENTO FACIAL</h3>
+                    
+                    <div class="facial-container">
+                        <video id="video" autoplay muted playsinline></video>
+                        <canvas id="canvas"></canvas>
+                    </div>
+                    
+                    <div class="facial-controls">
+                        <button id="capture-btn" disabled>
+                            <i class="fas fa-camera"></i> Capturar Imagem
+                        </button>
+                        
+                        <button id="retry-btn">
+                            <i class="fas fa-redo"></i> Tentar Novamente
+                        </button>
+                    </div>
+                    
+                    <div id="recognition-status" class="recognition-status status-pending">
+                        <i class="fas fa-sync-alt fa-spin"></i> Iniciando câmera...
+                    </div>
+                    
+                    <div id="recognition-result" class="recognition-result">
+                        <p><strong>Resultado:</strong> <span id="result-text"></span></p>
+                        <img id="captured-img" src="" alt="Imagem capturada">
                     </div>
                 </div>
                 
@@ -987,6 +1165,99 @@
     </div>
 
     <script>
+        // =============== RECONHECIMENTO FACIAL ===============
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const captureBtn = document.getElementById('capture-btn');
+        const retryBtn = document.getElementById('retry-btn');
+        const statusDiv = document.getElementById('recognition-status');
+        const resultDiv = document.getElementById('recognition-result');
+        const resultText = document.getElementById('result-text');
+        const capturedImg = document.getElementById('captured-img');
+        const ctx = canvas.getContext('2d');
+        
+        // Tamanhos ajustados para o canvas
+        const width = 600;
+        const height = 300;
+        video.width = width;
+        video.height = height;
+        canvas.width = width;
+        canvas.height = height;
+        
+        // Iniciar a câmera
+        async function initCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        width: { ideal: width },
+                        height: { ideal: height }
+                    }, 
+                    audio: false 
+                });
+                video.srcObject = stream;
+                captureBtn.disabled = false;
+                statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> Câmera pronta para captura';
+                statusDiv.className = 'recognition-status status-success';
+            } catch (err) {
+                console.error("Erro ao acessar a câmera:", err);
+                statusDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erro ao acessar a câmera';
+                statusDiv.className = 'recognition-status status-error';
+                captureBtn.disabled = true;
+            }
+        }
+        
+        // Capturar imagem
+        captureBtn.addEventListener('click', () => {
+            // Desenhar a imagem atual do vídeo no canvas
+            ctx.drawImage(video, 0, 0, width, height);
+            
+            // Obter a imagem como URL de dados
+            const imageData = canvas.toDataURL('image/png');
+            
+            // Exibir preview
+            capturedImg.src = imageData;
+            resultDiv.style.display = 'block';
+            
+            // Simular processamento facial
+            statusDiv.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Processando reconhecimento facial...';
+            statusDiv.className = 'recognition-status status-pending';
+            
+            setTimeout(() => {
+                // Simular resultado (sucesso ou falha aleatória)
+                const success = Math.random() > 0.3;
+                
+                if (success) {
+                    resultText.textContent = 'Reconhecimento facial realizado com sucesso!';
+                    resultText.style.color = '#2e7d32';
+                    statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> Reconhecimento facial validado';
+                    statusDiv.className = 'recognition-status status-success';
+                    captureBtn.disabled = true;
+                    retryBtn.style.display = 'none';
+                    
+                    // Salvar imagem no localStorage (simulação)
+                    localStorage.setItem('facialRecognitionImage', imageData);
+                } else {
+                    resultText.textContent = 'Falha no reconhecimento. Tente novamente.';
+                    resultText.style.color = '#c62828';
+                    statusDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Falha no reconhecimento facial';
+                    statusDiv.className = 'recognition-status status-error';
+                    retryBtn.style.display = 'flex';
+                }
+            }, 2000);
+        });
+        
+        // Tentar novamente
+        retryBtn.addEventListener('click', () => {
+            resultDiv.style.display = 'none';
+            statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> Câmera pronta para nova tentativa';
+            statusDiv.className = 'recognition-status status-success';
+            retryBtn.style.display = 'none';
+        });
+        
+        // Inicializar ao carregar a página
+        window.addEventListener('DOMContentLoaded', initCamera);
+        
+        // =============== FORMULÁRIO ===============
         // Contador para dependentes
         let dependenteCounter = 1;
         
@@ -1161,6 +1432,12 @@
         // Enviar via WhatsApp
         document.getElementById('btnWhatsapp').addEventListener('click', function() {
             if (validateForm()) {
+                // Verificar se o reconhecimento facial foi realizado
+                if (!captureBtn.disabled) {
+                    alert('Por favor, realize o reconhecimento facial antes de enviar o formulário.');
+                    return;
+                }
+                
                 // Simular envio
                 const progressContainer = document.getElementById('progressContainer');
                 const progressFill = document.getElementById('progressFill');
