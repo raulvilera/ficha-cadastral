@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ficha Cadastral de Funcionário - Funcional</title>
+    <title>Cadastro Completo com Reconhecimento Facial</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
     <style>
         * {
             margin: 0;
@@ -498,6 +499,7 @@
             background-color: #e9f7fe;
         }
         
+        /* Estilos para reconhecimento facial automático */
         .facial-recognition {
             position: relative;
             margin-bottom: 30px;
@@ -534,11 +536,13 @@
             border-radius: 8px;
             padding: 20px;
             box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            position: relative;
         }
         
         .camera-preview {
-            width: 250px;
-            height: 250px;
+            width: 100%;
+            max-width: 500px;
+            height: 375px;
             margin: 0 auto;
             border: 2px solid #e0e0e0;
             border-radius: 8px;
@@ -562,6 +566,7 @@
             left: 0;
             width: 100%;
             height: 100%;
+            z-index: 10;
         }
         
         .camera-controls {
@@ -633,12 +638,173 @@
         .camera-placeholder {
             text-align: center;
             color: #666;
+            padding: 20px;
         }
         
         .camera-placeholder i {
             font-size: 48px;
             margin-bottom: 15px;
             color: #1a2980;
+        }
+        
+        .status-indicator {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .status-pending { background-color: #ff9800; }
+        .status-good { background-color: #4CAF50; }
+        .status-bad { background-color: #f44336; }
+        
+        .position-feedback {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+            z-index: 20;
+            background: rgba(0,0,0,0.5);
+            padding: 8px;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .quality-bar {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 120px;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+            z-index: 20;
+        }
+        
+        .quality-progress {
+            height: 100%;
+            background: linear-gradient(to right, #f44336, #ff9800, #4CAF50);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .auto-capture-indicator {
+            position: absolute;
+            top: 30px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .capture-countdown {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 60px;
+            color: white;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+            z-index: 30;
+            display: none;
+        }
+        
+        .capture-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 25;
+            display: none;
+        }
+        
+        .capture-overlay i {
+            font-size: 80px;
+            color: white;
+            animation: pulse 1s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        .face-guidelines {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 250px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            z-index: 5;
+            display: none;
+        }
+        
+        .error-message {
+            color: #d32f2f;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .input-error {
+            border-color: #d32f2f;
+        }
+        
+        .success-message {
+            background: linear-gradient(to right, #4CAF50, #2E7D32);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
         }
         
         .dependentes-container {
@@ -742,43 +908,8 @@
             }
             
             .camera-preview {
-                width: 200px;
-                height: 200px;
+                height: 300px;
             }
-        }
-        
-        .error-message {
-            color: #d32f2f;
-            font-size: 14px;
-            margin-top: 5px;
-            display: none;
-        }
-        
-        .input-error {
-            border-color: #d32f2f;
-        }
-        
-        .success-message {
-            background: linear-gradient(to right, #4CAF50, #2E7D32);
-            color: white;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            margin: 20px 0;
-            display: none;
-        }
-        
-        .toast {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #4CAF50;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            display: none;
-            z-index: 1000;
         }
     </style>
 </head>
@@ -786,7 +917,7 @@
     <div class="container">
         <div class="card">
             <div class="header">
-                <h1><i class="fas fa-user-tie"></i> Ficha Cadastral de Funcionário</h1>
+                <h1><i class="fas fa-user-tie"></i> Ficha Cadastral Completa</h1>
             </div>
             
             <div class="company-info">
@@ -813,6 +944,91 @@
             </div>
             
             <form id="employeeForm">
+                <!-- Seção de Reconhecimento Facial Automático -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-camera"></i> Reconhecimento Facial Automático
+                    </div>
+                    
+                    <div class="facial-recognition">
+                        <div class="facial-header">
+                            <i class="fas fa-robot"></i> Captura Automática de Imagem Facial
+                        </div>
+                        
+                        <div class="facial-content">
+                            <div class="camera-container">
+                                <div class="camera-preview" id="cameraPreview">
+                                    <div class="camera-placeholder">
+                                        <i class="fas fa-camera"></i>
+                                        <p>Clique em Iniciar Câmera</p>
+                                    </div>
+                                    <video id="video" autoplay playsinline style="display: none;"></video>
+                                    <canvas id="canvas"></canvas>
+                                    <img id="capturedImage" class="captured-image" alt="Imagem capturada">
+                                    
+                                    <div class="status-indicator">
+                                        <div class="status-dot status-pending"></div>
+                                        <span>Status: Aguardando...</span>
+                                    </div>
+                                    
+                                    <div class="quality-bar">
+                                        <div class="quality-progress" id="qualityProgress"></div>
+                                    </div>
+                                    
+                                    <div class="auto-capture-indicator">
+                                        <i class="fas fa-robot"></i>
+                                        <span>Modo Automático</span>
+                                    </div>
+                                    
+                                    <div class="position-feedback" id="positionFeedback">
+                                        Posicione seu rosto no círculo
+                                    </div>
+                                    
+                                    <div class="face-guidelines" id="faceGuidelines"></div>
+                                    
+                                    <div class="capture-overlay" id="captureOverlay">
+                                        <i class="fas fa-camera"></i>
+                                    </div>
+                                    
+                                    <div class="capture-countdown" id="captureCountdown">3</div>
+                                </div>
+                                
+                                <div class="camera-controls">
+                                    <button type="button" id="startCamera" class="camera-btn capture">
+                                        <i class="fas fa-video"></i> Iniciar Câmera
+                                    </button>
+                                    <button type="button" id="retakeBtn" class="camera-btn retake" style="display: none;">
+                                        <i class="fas fa-redo"></i> Repetir Captura
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="facial-instructions">
+                                <h3><i class="fas fa-info-circle"></i> Instruções para Captura Automática</h3>
+                                <ul class="instructions-list">
+                                    <li><i class="fas fa-check-circle"></i> Certifique-se de estar em um ambiente bem iluminado</li>
+                                    <li><i class="fas fa-check-circle"></i> Olhe diretamente para a câmera</li>
+                                    <li><i class="fas fa-check-circle"></i> Mantenha o rosto dentro do círculo guia</li>
+                                    <li><i class="fas fa-check-circle"></i> Remova óculos escuros ou chapéus</li>
+                                    <li><i class="fas fa-check-circle"></i> Mantenha uma expressão neutra</li>
+                                    <li><i class="fas fa-check-circle"></i> O sistema capturará automaticamente quando a posição for ideal</li>
+                                </ul>
+                                
+                                <div class="instructions">
+                                    <p><i class="fas fa-lightbulb"></i> O sistema analisa continuamente:</p>
+                                    <ul>
+                                        <li>Posição do rosto (centralização)</li>
+                                        <li>Tamanho do rosto (distância da câmera)</li>
+                                        <li>Ângulo de rotação (frontalidade)</li>
+                                        <li>Iluminação e nitidez</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Seção de Dados Pessoais -->
                 <div class="form-section">
                     <div class="section-title">
                         <i class="fas fa-user"></i> Dados Pessoais
@@ -911,6 +1127,7 @@
                     </div>
                 </div>
                 
+                <!-- Seção de Endereço -->
                 <div class="form-section">
                     <div class="section-title">
                         <i class="fas fa-map-marker-alt"></i> Endereço
@@ -983,6 +1200,7 @@
                     </div>
                 </div>
                 
+                <!-- Seção de Contato -->
                 <div class="form-section">
                     <div class="section-title">
                         <i class="fas fa-phone"></i> Contato
@@ -1007,6 +1225,7 @@
                     </div>
                 </div>
                 
+                <!-- Seção de Formação Acadêmica -->
                 <div class="form-section">
                     <div class="section-title">
                         <i class="fas fa-graduation-cap"></i> Formação Acadêmica
@@ -1049,6 +1268,7 @@
                     </div>
                 </div>
                 
+                <!-- Seção de Experiência Profissional -->
                 <div class="form-section">
                     <div class="section-title">
                         <i class="fas fa-briefcase"></i> Experiência Profissional
@@ -1088,6 +1308,7 @@
                     </button>
                 </div>
                 
+                <!-- Seção de Dependentes -->
                 <div class="form-section">
                     <div class="section-title">
                         <i class="fas fa-users"></i> Dependentes
@@ -1142,55 +1363,7 @@
                     </button>
                 </div>
                 
-                <div class="form-section">
-                    <div class="section-title">
-                        <i class="fas fa-camera"></i> Reconhecimento Facial
-                    </div>
-                    
-                    <div class="facial-recognition">
-                        <div class="facial-header">
-                            <i class="fas fa-user-circle"></i> Captura de Imagem para Identificação
-                        </div>
-                        
-                        <div class="facial-content">
-                            <div class="camera-container">
-                                <div class="camera-preview" id="cameraPreview">
-                                    <div class="camera-placeholder">
-                                        <i class="fas fa-camera"></i>
-                                        <p>Clique em Iniciar Câmera</p>
-                                    </div>
-                                    <video id="video" autoplay playsinline style="display: none;"></video>
-                                    <canvas id="canvas" style="display: none;"></canvas>
-                                    <img id="capturedImage" class="captured-image" alt="Imagem capturada">
-                                </div>
-                                
-                                <div class="camera-controls">
-                                    <button type="button" id="startCamera" class="camera-btn capture">
-                                        <i class="fas fa-video"></i> Iniciar Câmera
-                                    </button>
-                                    <button type="button" id="captureBtn" class="camera-btn capture" disabled>
-                                        <i class="fas fa-camera"></i> Capturar
-                                    </button>
-                                    <button type="button" id="retakeBtn" class="camera-btn retake" disabled>
-                                        <i class="fas fa-redo"></i> Repetir
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <div class="facial-instructions">
-                                <h3><i class="fas fa-info-circle"></i> Instruções para Captura</h3>
-                                <ul class="instructions-list">
-                                    <li><i class="fas fa-check-circle"></i> Certifique-se de estar em um ambiente bem iluminado</li>
-                                    <li><i class="fas fa-check-circle"></i> Olhe diretamente para a câmera</li>
-                                    <li><i class="fas fa-check-circle"></i> Mantenha o rosto totalmente visível</li>
-                                    <li><i class="fas fa-check-circle"></i> Remova óculos escuros ou chapéus</li>
-                                    <li><i class="fas fa-check-circle"></i> Mantenha uma expressão neutra</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
+                <!-- Seção de Documentos -->
                 <div class="form-section">
                     <div class="section-title">
                         <i class="fas fa-file-upload"></i> Documentos
@@ -1229,6 +1402,7 @@
                     </div>
                 </div>
                 
+                <!-- Seção de Declarações Finais -->
                 <div class="form-section">
                     <div class="section-title">
                         <i class="fas fa-file-signature"></i> Declarações Finais
@@ -1271,6 +1445,7 @@
                     </div>
                 </div>
                 
+                <!-- Botões de Ação -->
                 <div class="btn-group">
                     <button type="button" id="generatePdf" class="btn">
                         <i class="fas fa-file-pdf"></i> Gerar PDF
@@ -1305,101 +1480,273 @@
         let uploadedFiles = [];
         let dependentCounter = 1;
         let experienceCounter = 1;
+        let captureTimeout = null;
+        let isCameraActive = false;
+        let detectionInterval = null;
+        let modelsLoaded = false;
         
-        // Inicialização quando o DOM estiver carregado
-        document.addEventListener('DOMContentLoaded', function() {
-            // Configurar máscaras de entrada
-            setupInputMasks();
-            
-            // Configurar eventos
-            setupEventListeners();
-        });
+        // Elementos DOM
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const capturedImage = document.getElementById('capturedImage');
+        const startCameraBtn = document.getElementById('startCamera');
+        const retakeBtn = document.getElementById('retakeBtn');
+        const positionFeedback = document.getElementById('positionFeedback');
+        const faceGuidelines = document.getElementById('faceGuidelines');
+        const captureOverlay = document.getElementById('captureOverlay');
+        const captureCountdown = document.getElementById('captureCountdown');
+        const qualityProgress = document.getElementById('qualityProgress');
         
-        function setupInputMasks() {
-            // Configurar máscara para CPF
-            const cpfInput = document.getElementById('cpf');
-            cpfInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-                if (value.length > 11) value = value.slice(0, 11);
-                
-                if (value.length > 9) {
-                    value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-                } else if (value.length > 6) {
-                    value = value.replace(/(\d{3})(\d{3})(\d+)/, '$1.$2.$3');
-                } else if (value.length > 3) {
-                    value = value.replace(/(\d{3})(\d+)/, '$1.$2');
-                }
-                e.target.value = value;
-            });
-            
-            // Configurar máscara para telefone
-            const phoneInputs = document.querySelectorAll('input[type="tel"]');
-            phoneInputs.forEach(input => {
-                input.addEventListener('input', function(e) {
-                    let value = e.target.value.replace(/\D/g, '');
-                    if (value.length > 11) value = value.slice(0, 11);
-                    
-                    if (value.length > 10) {
-                        value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-                    } else if (value.length > 6) {
-                        value = value.replace(/(\d{2})(\d{4})(\d+)/, '($1) $2-$3');
-                    } else if (value.length > 2) {
-                        value = value.replace(/(\d{2})(\d+)/, '($1) $2');
-                    }
-                    e.target.value = value;
-                });
-            });
-            
-            // Configurar máscara para CEP
-            const cepInput = document.getElementById('cep');
-            cepInput.addEventListener('input', function(e) {
-                let value = e.target.value.replace(/\D/g, '');
-                if (value.length > 8) value = value.slice(0, 8);
-                
-                if (value.length > 5) {
-                    value = value.replace(/(\d{5})(\d+)/, '$1-$2');
-                }
-                e.target.value = value;
-            });
+        // Carregar modelos de reconhecimento facial
+        async function loadModels() {
+            try {
+                await Promise.all([
+                    faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+                    faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
+                    faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
+                    faceapi.nets.faceExpressionNet.loadFromUri('/models'),
+                    faceapi.nets.ageGenderNet.loadFromUri('/models')
+                ]);
+                modelsLoaded = true;
+                showToast('Modelos de reconhecimento carregados!');
+            } catch (err) {
+                console.error('Erro ao carregar modelos:', err);
+                showToast('Erro ao carregar modelos de reconhecimento.', 'error');
+            }
         }
         
-        function setupEventListeners() {
-            // Botão para adicionar dependente
-            document.getElementById('addDependente').addEventListener('click', addDependente);
-            
-            // Botão para adicionar experiência
-            document.getElementById('addExperiencia').addEventListener('click', addExperiencia);
-            
-            // Botões da câmera
-            document.getElementById('startCamera').addEventListener('click', startCamera);
-            document.getElementById('captureBtn').addEventListener('click', capturePhoto);
-            document.getElementById('retakeBtn').addEventListener('click', retakePhoto);
-            
-            // Upload de arquivos
-            document.getElementById('uploadBtn').addEventListener('click', triggerFileInput);
-            document.getElementById('fileInput').addEventListener('change', handleFileSelect);
-            document.getElementById('dropArea').addEventListener('dragover', handleDragOver);
-            document.getElementById('dropArea').addEventListener('drop', handleFileDrop);
-            
-            // Botões de ação
-            document.getElementById('generatePdf').addEventListener('click', generatePdf);
-            document.getElementById('sendWhatsApp').addEventListener('click', sendViaWhatsApp);
-            document.getElementById('submitForm').addEventListener('click', submitForm);
-            
-            // Remover dependentes e experiências (delegação de eventos)
-            document.getElementById('dependentesContainer').addEventListener('click', function(e) {
-                if (e.target.closest('.remove-dependente')) {
-                    e.target.closest('.dependente-card').remove();
-                    updateDependenteTitles();
+        // Iniciar a câmera
+        async function startCamera() {
+            try {
+                if (!modelsLoaded) {
+                    showToast('Carregando modelos... aguarde.', 'info');
+                    await loadModels();
                 }
-            });
+                
+                stream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { 
+                        width: { ideal: 1280 },
+                        height: { ideal: 720 },
+                        facingMode: 'user'
+                    }, 
+                    audio: false 
+                });
+                
+                video.style.display = 'block';
+                video.srcObject = stream;
+                
+                // Esconder placeholder e mostrar elementos
+                document.querySelector('.camera-placeholder').style.display = 'none';
+                faceGuidelines.style.display = 'block';
+                startCameraBtn.style.display = 'none';
+                retakeBtn.style.display = 'inline-flex';
+                isCameraActive = true;
+                
+                // Ajustar tamanho do canvas
+                video.addEventListener('loadedmetadata', () => {
+                    canvas.width = video.videoWidth;
+                    canvas.height = video.videoHeight;
+                    
+                    // Iniciar detecção facial
+                    startFaceDetection();
+                });
+                
+                showToast('Câmera iniciada! O sistema está analisando sua posição...');
+            } catch (err) {
+                console.error('Erro ao acessar a câmera:', err);
+                showToast('Erro ao acessar a câmera. Verifique as permissões.', 'error');
+            }
+        }
+        
+        // Iniciar detecção facial
+        function startFaceDetection() {
+            if (detectionInterval) clearInterval(detectionInterval);
             
-            document.getElementById('experienciasContainer').addEventListener('click', function(e) {
-                if (e.target.closest('.remove-experiencia')) {
-                    e.target.closest('.form-row').remove();
-                    updateExperienciaTitles();
+            detectionInterval = setInterval(async () => {
+                if (!isCameraActive) return;
+                
+                const detections = await faceapi.detectAllFaces(
+                    video, 
+                    new faceapi.TinyFaceDetectorOptions()
+                ).withFaceLandmarks().withFaceExpressions().withAgeAndGender();
+                
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Desenhar detecções
+                faceapi.draw.drawFaceLandmarks(canvas, detections);
+                
+                if (detections.length > 0) {
+                    const detection = detections[0];
+                    analyzeFacePosition(detection);
+                } else {
+                    updatePositionFeedback('Nenhum rosto detectado', 'bad');
+                    qualityProgress.style.width = '0%';
                 }
-            });
+            }, 300);
+        }
+        
+        // Analisar posição do rosto
+        function analyzeFacePosition(detection) {
+            const videoWidth = video.videoWidth;
+            const videoHeight = video.videoHeight;
+            
+            const faceBox = detection.detection.box;
+            const faceCenterX = faceBox.x + faceBox.width / 2;
+            const faceCenterY = faceBox.y + faceBox.height / 2;
+            
+            // Calcular posição relativa
+            const centerX = videoWidth / 2;
+            const centerY = videoHeight / 2;
+            
+            const xOffset = Math.abs(faceCenterX - centerX);
+            const yOffset = Math.abs(faceCenterY - centerY);
+            
+            // Calcular tamanho relativo (quanto maior, melhor)
+            const faceSize = Math.min(faceBox.width / videoWidth, faceBox.height / videoHeight);
+            
+            // Calcular ângulo de rotação (simplificado)
+            const landmarks = detection.landmarks;
+            const leftEye = landmarks.getLeftEye()[0];
+            const rightEye = landmarks.getRightEye()[3];
+            const eyeDistance = Math.sqrt(
+                Math.pow(rightEye.x - leftEye.x, 2) + 
+                Math.pow(rightEye.y - leftEye.y, 2)
+            );
+            
+            const nose = landmarks.getNose()[3];
+            const midPointX = (leftEye.x + rightEye.x) / 2;
+            const midPointY = (leftEye.y + rightEye.y) / 2;
+            
+            const xAngle = Math.atan2(nose.y - midPointY, nose.x - midPointX) * 180 / Math.PI;
+            
+            // Calcular pontuações (0-100%)
+            const positionScore = Math.max(0, 100 - (xOffset / centerX * 50 + yOffset / centerY * 50));
+            const sizeScore = Math.min(100, Math.max(0, faceSize * 200));
+            const angleScore = Math.max(0, 100 - Math.abs(xAngle) * 2);
+            
+            // Calcular qualidade total (média ponderada)
+            const totalScore = 
+                positionScore * 0.4 + 
+                sizeScore * 0.3 + 
+                angleScore * 0.3;
+                
+            qualityProgress.style.width = totalScore + '%';
+            
+            // Atualizar feedback visual
+            if (totalScore > 85) {
+                updatePositionFeedback('Posição perfeita! Captura em...', 'good');
+                scheduleCapture();
+            } else if (totalScore > 70) {
+                updatePositionFeedback('Boa posição! Continue assim...', 'good');
+                cancelCapture();
+            } else if (totalScore > 50) {
+                updatePositionFeedback('Aproxime-se e centralize o rosto', 'pending');
+                cancelCapture();
+            } else {
+                updatePositionFeedback('Posicione seu rosto no círculo', 'bad');
+                cancelCapture();
+            }
+        }
+        
+        // Agendar captura automática
+        function scheduleCapture() {
+            if (captureTimeout) return;
+            
+            let count = 3;
+            captureCountdown.textContent = count;
+            captureCountdown.style.display = 'block';
+            
+            const countdown = setInterval(() => {
+                count--;
+                captureCountdown.textContent = count;
+                
+                if (count <= 0) {
+                    clearInterval(countdown);
+                    captureCountdown.style.display = 'none';
+                    capturePhoto();
+                }
+            }, 1000);
+        }
+        
+        // Cancelar captura programada
+        function cancelCapture() {
+            if (captureTimeout) {
+                clearTimeout(captureTimeout);
+                captureTimeout = null;
+            }
+            captureCountdown.style.display = 'none';
+        }
+        
+        // Capturar foto
+        function capturePhoto() {
+            if (!isCameraActive) return;
+            
+            // Mostrar overlay de captura
+            captureOverlay.style.display = 'flex';
+            
+            setTimeout(() => {
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Desenhar imagem no canvas
+                ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                // Obter URL da imagem
+                capturedPhoto = canvas.toDataURL('image/jpeg', 0.92);
+                capturedImage.src = capturedPhoto;
+                capturedImage.style.display = 'block';
+                video.style.display = 'none';
+                
+                // Parar a câmera e detecção
+                if (stream) {
+                    stream.getTracks().forEach(track => track.stop());
+                }
+                clearInterval(detectionInterval);
+                isCameraActive = false;
+                
+                // Esconder overlay
+                captureOverlay.style.display = 'none';
+                
+                // Atualizar UI
+                faceGuidelines.style.display = 'none';
+                positionFeedback.style.display = 'none';
+                qualityProgress.style.width = '0%';
+                
+                showToast('Captura automática realizada com sucesso!');
+            }, 500);
+        }
+        
+        // Repetir captura
+        function retakePhoto() {
+            capturedImage.style.display = 'none';
+            video.style.display = 'block';
+            positionFeedback.style.display = 'block';
+            faceGuidelines.style.display = 'block';
+            retakeBtn.style.display = 'none';
+            startCameraBtn.style.display = 'inline-flex';
+            
+            // Reiniciar a câmera
+            startCamera();
+        }
+        
+        // Atualizar feedback de posição
+        function updatePositionFeedback(message, status) {
+            positionFeedback.textContent = message;
+            
+            const statusDot = document.querySelector('.status-dot');
+            statusDot.className = 'status-dot';
+            
+            if (status === 'good') {
+                statusDot.classList.add('status-good');
+                positionFeedback.style.backgroundColor = 'rgba(76, 175, 80, 0.7)';
+            } else if (status === 'pending') {
+                statusDot.classList.add('status-pending');
+                positionFeedback.style.backgroundColor = 'rgba(255, 152, 0, 0.7)';
+            } else {
+                statusDot.classList.add('status-bad');
+                positionFeedback.style.backgroundColor = 'rgba(244, 67, 54, 0.7)';
+            }
         }
         
         // Funções para dependentes
@@ -1492,68 +1839,6 @@
         function updateExperienciaTitles() {
             const experiencias = document.querySelectorAll('.experiencia-item');
             experienceCounter = experiencias.length;
-        }
-        
-        // Funções para câmera
-        async function startCamera() {
-            try {
-                stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-                const video = document.getElementById('video');
-                video.style.display = 'block';
-                video.srcObject = stream;
-                
-                // Esconder placeholder
-                document.querySelector('.camera-placeholder').style.display = 'none';
-                
-                // Ativar botões
-                document.getElementById('captureBtn').disabled = false;
-                document.getElementById('retakeBtn').disabled = true;
-                document.getElementById('startCamera').disabled = true;
-                
-                showToast('Câmera iniciada com sucesso!');
-            } catch (err) {
-                console.error('Erro ao acessar a câmera:', err);
-                showToast('Erro ao acessar a câmera. Verifique as permissões.', 'error');
-            }
-        }
-        
-        function capturePhoto() {
-            const video = document.getElementById('video');
-            const canvas = document.getElementById('canvas');
-            const capturedImage = document.getElementById('capturedImage');
-            
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
-            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-            
-            // Parar a câmera
-            if (stream) {
-                stream.getTracks().forEach(track => track.stop());
-            }
-            
-            // Mostrar imagem capturada
-            capturedPhoto = canvas.toDataURL('image/png');
-            capturedImage.src = capturedPhoto;
-            capturedImage.style.display = 'block';
-            video.style.display = 'none';
-            
-            // Atualizar botões
-            document.getElementById('captureBtn').disabled = true;
-            document.getElementById('retakeBtn').disabled = false;
-            document.getElementById('startCamera').disabled = false;
-            
-            showToast('Foto capturada com sucesso!');
-        }
-        
-        function retakePhoto() {
-            const video = document.getElementById('video');
-            const capturedImage = document.getElementById('capturedImage');
-            
-            capturedImage.style.display = 'none';
-            video.style.display = 'block';
-            
-            // Reiniciar a câmera
-            startCamera();
         }
         
         // Funções para upload de arquivos
@@ -1773,13 +2058,108 @@
             const toastMessage = document.getElementById('toastMessage');
             
             toastMessage.textContent = message;
-            toast.style.backgroundColor = type === 'error' ? '#f44336' : '#4CAF50';
+            toast.style.backgroundColor = type === 'error' ? '#f44336' : 
+                                          type === 'info' ? '#2196F3' : '#4CAF50';
             toast.style.display = 'flex';
             
             setTimeout(() => {
                 toast.style.display = 'none';
             }, 3000);
         }
+        
+        // Configurar máscaras de entrada
+        function setupInputMasks() {
+            // Configurar máscara para CPF
+            const cpfInput = document.getElementById('cpf');
+            cpfInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 11) value = value.slice(0, 11);
+                
+                if (value.length > 9) {
+                    value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+                } else if (value.length > 6) {
+                    value = value.replace(/(\d{3})(\d{3})(\d+)/, '$1.$2.$3');
+                } else if (value.length > 3) {
+                    value = value.replace(/(\d{3})(\d+)/, '$1.$2');
+                }
+                e.target.value = value;
+            });
+            
+            // Configurar máscara para telefone
+            const phoneInputs = document.querySelectorAll('input[type="tel"]');
+            phoneInputs.forEach(input => {
+                input.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 11) value = value.slice(0, 11);
+                    
+                    if (value.length > 10) {
+                        value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+                    } else if (value.length > 6) {
+                        value = value.replace(/(\d{2})(\d{4})(\d+)/, '($1) $2-$3');
+                    } else if (value.length > 2) {
+                        value = value.replace(/(\d{2})(\d+)/, '($1) $2');
+                    }
+                    e.target.value = value;
+                });
+            });
+            
+            // Configurar máscara para CEP
+            const cepInput = document.getElementById('cep');
+            cepInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 8) value = value.slice(0, 8);
+                
+                if (value.length > 5) {
+                    value = value.replace(/(\d{5})(\d+)/, '$1-$2');
+                }
+                e.target.value = value;
+            });
+        }
+        
+        function setupEventListeners() {
+            // Botão para adicionar dependente
+            document.getElementById('addDependente').addEventListener('click', addDependente);
+            
+            // Botão para adicionar experiência
+            document.getElementById('addExperiencia').addEventListener('click', addExperiencia);
+            
+            // Botões da câmera
+            document.getElementById('startCamera').addEventListener('click', startCamera);
+            document.getElementById('retakeBtn').addEventListener('click', retakePhoto);
+            
+            // Upload de arquivos
+            document.getElementById('uploadBtn').addEventListener('click', triggerFileInput);
+            document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+            document.getElementById('dropArea').addEventListener('dragover', handleDragOver);
+            document.getElementById('dropArea').addEventListener('drop', handleFileDrop);
+            
+            // Botões de ação
+            document.getElementById('generatePdf').addEventListener('click', generatePdf);
+            document.getElementById('sendWhatsApp').addEventListener('click', sendViaWhatsApp);
+            document.getElementById('submitForm').addEventListener('click', submitForm);
+            
+            // Remover dependentes e experiências (delegação de eventos)
+            document.getElementById('dependentesContainer').addEventListener('click', function(e) {
+                if (e.target.closest('.remove-dependente')) {
+                    e.target.closest('.dependente-card').remove();
+                    updateDependenteTitles();
+                }
+            });
+            
+            document.getElementById('experienciasContainer').addEventListener('click', function(e) {
+                if (e.target.closest('.remove-experiencia')) {
+                    e.target.closest('.form-row').remove();
+                    updateExperienciaTitles();
+                }
+            });
+        }
+        
+        // Inicialização quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', function() {
+            setupInputMasks();
+            setupEventListeners();
+            loadModels();
+        });
     </script>
 </body>
 </html>
