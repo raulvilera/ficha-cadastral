@@ -38,6 +38,45 @@
             border: 1px solid #e0e0e0;
             transform: translateY(0);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+        
+        .company-logo {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            z-index: 10;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-symbol {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a2980;
+        }
+        
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .logo-text .company-name {
+            font-weight: 700;
+            font-size: 16px;
+            color: #1a2980;
+            line-height: 1.1;
+        }
+        
+        .logo-text .company-description {
+            font-size: 12px;
+            color: #444;
+            letter-spacing: 0.5px;
         }
         
         .card:hover {
@@ -48,7 +87,7 @@
         .header {
             background: linear-gradient(to right, #1a2980, #26d0ce);
             color: white;
-            padding: 25px 30px;
+            padding: 25px 30px 25px 100px;
             text-align: center;
             position: relative;
         }
@@ -910,32 +949,44 @@
             .camera-preview {
                 height: 300px;
             }
+            
+            .header {
+                padding-left: 30px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="card">
+            <div class="company-logo">
+                <div class="logo-symbol">S</div>
+                <div class="logo-text">
+                    <div class="company-name">SELLES</div>
+                    <div class="company-description">ASSESSORIA CONTABIL</div>
+                </div>
+            </div>
+            
             <div class="header">
-                <h1><i class="fas fa-user-tie"></i> FICHA CADASTRAL COMPLETA</h1>
+                <h1><i class="fas fa-user-tie"></i> Ficha Cadastral Completa</h1>
             </div>
             
             <div class="company-info">
                 <div>
                     <i class="fas fa-building"></i>
-                    <span>ESCRITÓRIO SELLES ASSESSORIA CONTÁBIL</span>
+                    <span>Empresa: Escritório Selles Assessoria Contábil</span>
                 </div>
                 <div>
                     <i class="fas fa-map-marker-alt"></i>
-                    <span>ENDEREÇO: RUA: 5, 2245, CENTRO - JALES/SP</span>
+                    <span>Endereço: Rua: 5, 2245 -Centro - Jales/SP</span>
                 </div>
                 <div>
                     <i class="fas fa-phone"></i>
-                    <span>TELEFONE: (17) 3632 - 3016</span>
+                    <span>Telefone: (17) 3632-3016</span>
                 </div>
                 <div>
                     <i class="fas fa-envelope"></i>
-                    <span>EMAIL: escrsel@gmail.com</span>
+                    <span>Email: escrsel@gmail.com</span>
                 </div>
             </div>
             
@@ -944,10 +995,10 @@
             </div>
             
             <form id="employeeForm">
-                <!-- Seção de Reconhecimento Facial Automático -->
+                <!-- Seção de Reconhecimento Facial Automático (opcional) -->
                 <div class="form-section">
                     <div class="section-title">
-                        <i class="fas fa-camera"></i> Reconhecimento Facial Automático
+                        <i class="fas fa-camera"></i> Reconhecimento Facial Automático (Opcional)
                     </div>
                     
                     <div class="facial-recognition">
@@ -1200,7 +1251,7 @@
                     </div>
                 </div>
                 
-                <!-- Seção de Contato -->
+                <!-- Seção de Contato (com 2 celulares) -->
                 <div class="form-section">
                     <div class="section-title">
                         <i class="fas fa-phone"></i> Contato
@@ -1208,12 +1259,12 @@
                     
                     <div class="form-row">
                         <div class="form-group medium">
-                            <label for="telefone" class="required">Telefone</label>
-                            <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
+                            <label for="celular1" class="required">Celular 1</label>
+                            <input type="tel" id="celular1" name="celular1" placeholder="(00) 00000-0000" required>
                         </div>
                         <div class="form-group medium">
-                            <label for="celular" class="required">Celular</label>
-                            <input type="tel" id="celular" name="celular" placeholder="(00) 00000-0000" required>
+                            <label for="celular2">Celular 2</label>
+                            <input type="tel" id="celular2" name="celular2" placeholder="(00) 00000-0000">
                         </div>
                     </div>
                     
@@ -1308,10 +1359,10 @@
                     </button>
                 </div>
                 
-                <!-- Seção de Dependentes -->
+                <!-- Seção de Dependentes (opcional) -->
                 <div class="form-section">
                     <div class="section-title">
-                        <i class="fas fa-users"></i> Dependentes
+                        <i class="fas fa-users"></i> Dependentes (Opcional)
                     </div>
                     
                     <div class="instructions">
@@ -1329,12 +1380,12 @@
                             
                             <div class="form-row">
                                 <div class="form-group medium">
-                                    <label class="required">Nome Completo</label>
-                                    <input type="text" name="dependenteNome[]" required>
+                                    <label>Nome Completo</label>
+                                    <input type="text" name="dependenteNome[]">
                                 </div>
                                 <div class="form-group medium">
-                                    <label class="required">Parentesco</label>
-                                    <select name="dependenteParentesco[]" required>
+                                    <label>Parentesco</label>
+                                    <select name="dependenteParentesco[]">
                                         <option value="">Selecione</option>
                                         <option value="conjuge">Cônjuge</option>
                                         <option value="filho">Filho(a)</option>
@@ -1347,8 +1398,8 @@
                             
                             <div class="form-row">
                                 <div class="form-group small">
-                                    <label class="required">Data de Nascimento</label>
-                                    <input type="date" name="dependenteNascimento[]" required>
+                                    <label>Data de Nascimento</label>
+                                    <input type="date" name="dependenteNascimento[]">
                                 </div>
                                 <div class="form-group small">
                                     <label>CPF</label>
@@ -1402,10 +1453,10 @@
                     </div>
                 </div>
                 
-                <!-- Seção de Declarações Finais -->
+                <!-- Seção de Declarações Finais (opcional) -->
                 <div class="form-section">
                     <div class="section-title">
-                        <i class="fas fa-file-signature"></i> Declarações Finais
+                        <i class="fas fa-file-signature"></i> Declarações Finais (Opcional)
                     </div>
                     
                     <div class="form-row">
@@ -1414,12 +1465,12 @@
                                 <label>Declaro que as informações fornecidas são verdadeiras e estou ciente que falsas declarações sujeitam-me às penalidades legais.</label>
                                 <div style="margin-top: 15px; display: flex; align-items: center; gap: 15px;">
                                     <div style="flex: 1;">
-                                        <label for="dataDeclaracao" class="required">Data</label>
-                                        <input type="date" id="dataDeclaracao" name="dataDeclaracao" required>
+                                        <label for="dataDeclaracao">Data</label>
+                                        <input type="date" id="dataDeclaracao" name="dataDeclaracao">
                                     </div>
                                     <div style="flex: 1;">
-                                        <label for="cidadeDeclaracao" class="required">Cidade</label>
-                                        <input type="text" id="cidadeDeclaracao" name="cidadeDeclaracao" required>
+                                        <label for="cidadeDeclaracao">Cidade</label>
+                                        <input type="text" id="cidadeDeclaracao" name="cidadeDeclaracao">
                                     </div>
                                 </div>
                             </div>
@@ -1432,12 +1483,12 @@
                                 <label>Autorizo a empresa a utilizar minhas informações para fins de registro e conformidade legal.</label>
                                 <div style="margin-top: 15px; display: flex; align-items: center; gap: 15px;">
                                     <div style="flex: 1;">
-                                        <label for="dataAutorizacao" class="required">Data</label>
-                                        <input type="date" id="dataAutorizacao" name="dataAutorizacao" required>
+                                        <label for="dataAutorizacao">Data</label>
+                                        <input type="date" id="dataAutorizacao" name="dataAutorizacao">
                                     </div>
                                     <div style="flex: 1;">
-                                        <label for="cidadeAutorizacao" class="required">Cidade</label>
-                                        <input type="text" id="cidadeAutorizacao" name="cidadeAutorizacao" required>
+                                        <label for="cidadeAutorizacao">Cidade</label>
+                                        <input type="text" id="cidadeAutorizacao" name="cidadeAutorizacao">
                                     </div>
                                 </div>
                             </div>
@@ -1823,12 +1874,12 @@
                 
                 <div class="form-row">
                     <div class="form-group medium">
-                        <label class="required">Nome Completo</label>
-                        <input type="text" name="dependenteNome[]" required>
+                        <label>Nome Completo</label>
+                        <input type="text" name="dependenteNome[]">
                     </div>
                     <div class="form-group medium">
-                        <label class="required">Parentesco</label>
-                        <select name="dependenteParentesco[]" required>
+                        <label>Parentesco</label>
+                        <select name="dependenteParentesco[]">
                             <option value="">Selecione</option>
                             <option value="conjuge">Cônjuge</option>
                             <option value="filho">Filho(a)</option>
@@ -1841,8 +1892,8 @@
                 
                 <div class="form-row">
                     <div class="form-group small">
-                        <label class="required">Data de Nascimento</label>
-                        <input type="date" name="dependenteNascimento[]" required>
+                        <label>Data de Nascimento</label>
+                        <input type="date" name="dependenteNascimento[]">
                     </div>
                     <div class="form-group small">
                         <label>CPF</label>
@@ -2095,17 +2146,7 @@
                 document.getElementById('email').classList.add('input-error');
             }
             
-            // Verificar se foto foi capturada
-            if (!capturedPhoto) {
-                isValid = false;
-                showToast('Por favor, capture uma foto para identificação', 'error');
-            }
-            
-            // Verificar se arquivos foram enviados
-            if (uploadedFiles.length === 0) {
-                isValid = false;
-                showToast('Por favor, envie os documentos necessários', 'error');
-            }
+            // Removida validação de foto facial e documentos
             
             return isValid;
         }
@@ -2165,7 +2206,7 @@
             const cepInput = document.getElementById('cep');
             cepInput.addEventListener('input', function(e) {
                 let value = e.target.value.replace(/\D/g, '');
-                if (value.length > 8) value = value.slice(0, 8);
+                if (value.length > 8) value = val.slice(0, 8);
                 
                 if (value.length > 5) {
                     value = value.replace(/(\d{5})(\d+)/, '$1-$2');
