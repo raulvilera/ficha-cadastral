@@ -1484,6 +1484,8 @@
         let isCameraActive = false;
         let detectionInterval = null;
         let modelsLoaded = false;
+        let isFaceInPosition = false;
+        let facePositionScore = 0;
         
         // Elementos DOM
         const video = document.getElementById('video');
@@ -1579,11 +1581,57 @@
                 if (detections.length > 0) {
                     const detection = detections[0];
                     analyzeFacePosition(detection);
+                    
+                    // Desenhar diretrizes de posição
+                    drawFaceGuidelines(detection);
                 } else {
                     updatePositionFeedback('Nenhum rosto detectado', 'bad');
                     qualityProgress.style.width = '0%';
+                    isFaceInPosition = false;
+                    facePositionScore = 0;
+                    cancelCapture();
                 }
             }, 300);
+        }
+        
+        // Desenhar diretrizes de posição do rosto
+        function drawFaceGuidelines(detection) {
+            const ctx = canvas.getContext('2d');
+            const videoWidth = video.videoWidth;
+            const videoHeight = video.videoHeight;
+            
+            // Limpar diretrizes anteriores
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Desenhar círculo guia
+            const centerX = videoWidth / 2;
+            const centerY = videoHeight / 2;
+            const radius = Math.min(videoWidth, videoHeight) * 0.3;
+            
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            // Desenhar rosto detectado
+            const faceBox = detection.detection.box;
+            const faceCenterX = faceBox.x + faceBox.width / 2;
+            const faceCenterY = faceBox.y + faceBox.height / 2;
+            
+            ctx.strokeStyle = 'rgba(0, 255, 0, 0.7)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(faceCenterX, faceCenterY, 5, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            // Linha do centro para o rosto
+            ctx.strokeStyle = 'rgba(0, 255, 0, 0.5)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(centerX, centerY);
+            ctx.lineTo(faceCenterX, faceCenterY);
+            ctx.stroke();
         }
         
         // Analisar posição do rosto
@@ -1636,15 +1684,25 @@
             // Atualizar feedback visual
             if (totalScore > 85) {
                 updatePositionFeedback('Posição perfeita! Captura em...', 'good');
-                scheduleCapture();
+                if (!isFaceInPosition) {
+                    isFaceInPosition = true;
+                    facePositionScore = totalScore;
+                    scheduleCapture();
+                }
             } else if (totalScore > 70) {
                 updatePositionFeedback('Boa posição! Continue assim...', 'good');
+                isFaceInPosition = false;
+                facePositionScore = totalScore;
                 cancelCapture();
             } else if (totalScore > 50) {
                 updatePositionFeedback('Aproxime-se e centralize o rosto', 'pending');
+                isFaceInPosition = false;
+                facePositionScore = totalScore;
                 cancelCapture();
             } else {
                 updatePositionFeedback('Posicione seu rosto no círculo', 'bad');
+                isFaceInPosition = false;
+                facePositionScore = totalScore;
                 cancelCapture();
             }
         }
