@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ficha Cadastral de Funcionário</title>
+    <title>Ficha Cadastral de Funcionário - Funcional</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -130,7 +129,6 @@
             margin-bottom: 15px;
         }
         
-        /* Larguras personalizadas */
         .form-group.full {
             flex: 0 0 100%;
         }
@@ -500,143 +498,200 @@
             background-color: #e9f7fe;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* ESTILOS DO RECONHECIMENTO FACIAL */
         .facial-recognition {
-            width: 100%;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            overflow: hidden;
             border: 1px solid #e0e0e0;
-            margin: 30px 0;
         }
         
-        .facial-recognition h3 {
-            margin-bottom: 15px;
-            color: #1a2980;
+        .facial-header {
+            background: linear-gradient(to right, #1a2980, #26d0ce);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 18px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            font-size: 18px;
+            gap: 10px;
         }
         
-        .facial-container {
-            position: relative;
-            margin-bottom: 15px;
-            height: 300px;
-            max-width: 600px;
+        .facial-content {
+            padding: 20px;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .camera-container {
+            flex: 1;
+            min-width: 300px;
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .camera-preview {
+            width: 250px;
+            height: 250px;
             margin: 0 auto;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
         }
         
-        #video, #canvas {
+        .camera-preview video {
             width: 100%;
             height: 100%;
-            border-radius: 8px;
-            border: 2px solid #e0e0e0;
+            object-fit: cover;
         }
         
-        #video {
-            display: block;
-            background: #f8f9fa;
-        }
-        
-        #canvas {
-            display: none;
+        .camera-preview canvas {
             position: absolute;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
         }
         
-        .facial-controls {
+        .camera-controls {
             display: flex;
             justify-content: center;
             gap: 15px;
             margin-top: 20px;
         }
         
-        #capture-btn, #retry-btn {
-            background: linear-gradient(to right, #1a2980, #26d0ce);
-            color: white;
-            border: none;
+        .camera-btn {
             padding: 10px 20px;
+            border: none;
             border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 8px;
             transition: all 0.3s;
-            font-size: 15px;
-            min-width: 180px;
         }
         
-        #capture-btn:hover, #retry-btn:hover {
+        .camera-btn.capture {
+            background: linear-gradient(to right, #4CAF50, #2E7D32);
+            color: white;
+        }
+        
+        .camera-btn.retake {
+            background: linear-gradient(to right, #f44336, #d32f2f);
+            color: white;
+        }
+        
+        .camera-btn:hover {
             opacity: 0.9;
             transform: translateY(-2px);
         }
         
-        #capture-btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-        
-        #retry-btn {
-            background: #ff9800;
-            display: none;
-        }
-        
-        .recognition-status {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 14px;
-            text-align: center;
-        }
-        
-        .status-pending {
-            background-color: #fff9c4;
-            color: #f57f17;
-        }
-        
-        .status-success {
-            background-color: #c8e6c9;
-            color: #2e7d32;
-        }
-        
-        .status-error {
-            background-color: #ffcdd2;
-            color: #c62828;
-        }
-        
-        .recognition-result {
-            margin-top: 20px;
-            padding: 15px;
+        .facial-instructions {
+            flex: 1;
+            min-width: 300px;
+            background: #fff;
             border-radius: 8px;
-            background-color: #f5f5f5;
-            border: 1px solid #e0e0e0;
-            font-size: 14px;
-            text-align: center;
+            padding: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+        
+        .instructions-list {
+            list-style-type: none;
+            padding: 15px 0;
+        }
+        
+        .instructions-list li {
+            padding: 8px 0;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .instructions-list i {
+            color: #1a2980;
+            min-width: 20px;
+        }
+        
+        .captured-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             display: none;
         }
         
-        .recognition-result img {
-            max-width: 100%;
-            border-radius: 6px;
-            margin-top: 15px;
-            max-height: 200px;
-            border: 1px solid #ddd;
+        .camera-placeholder {
+            text-align: center;
+            color: #666;
         }
         
-        .recognition-result p {
-            margin: 8px 0;
+        .camera-placeholder i {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #1a2980;
+        }
+        
+        .dependentes-container {
+            margin-top: 20px;
+        }
+        
+        .dependente-card {
+            background-color: #f0f8ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #cfe8ff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: relative;
+        }
+        
+        .dependente-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #cfe8ff;
+        }
+        
+        .dependente-card-title {
+            font-weight: 600;
+            color: #1a2980;
+            font-size: 18px;
+        }
+        
+        .remove-dependente {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .remove-dependente:hover {
+            background: #ff5252;
+            transform: rotate(90deg);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         @media (max-width: 768px) {
@@ -679,22 +734,51 @@
             
             .btn {
                 min-width: 100%;
-            margin-bottom: 10px;
+            width: 100%;
             }
             
-            .facial-container {
-                height: 250px;
-            }
-            
-            .facial-controls {
+            .facial-content {
                 flex-direction: column;
-                align-items: center;
             }
             
-            #capture-btn, #retry-btn {
-                width: 100%;
-                max-width: 300px;
+            .camera-preview {
+                width: 200px;
+                height: 200px;
             }
+        }
+        
+        .error-message {
+            color: #d32f2f;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .input-error {
+            border-color: #d32f2f;
+        }
+        
+        .success-message {
+            background: linear-gradient(to right, #4CAF50, #2E7D32);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+            display: none;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
         }
     </style>
 </head>
@@ -702,134 +786,96 @@
     <div class="container">
         <div class="card">
             <div class="header">
-                <h1><i class="fas fa-id-card"></i> FICHA CADASTRAL DE FUNCIONÁRIO</h1>
+                <h1><i class="fas fa-user-tie"></i> Ficha Cadastral de Funcionário</h1>
             </div>
             
             <div class="company-info">
-                <div><i class="fas fa-phone"></i> TELEFONE: (17) 3632-3016</div>
-                <div><i class="fas fa-map-marker-alt"></i> RUA 5, 2245, CENTRO - JALES SP</div>
-                <div><i class="fas fa-id-badge"></i> CNPJ: 22.485.848/0001-90</div>
+                <div>
+                    <i class="fas fa-building"></i>
+                    <span>Empresa: Tech Solutions Ltda</span>
+                </div>
+                <div>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Endereço: Av. Paulista, 1000 - São Paulo/SP</span>
+                </div>
+                <div>
+                    <i class="fas fa-phone"></i>
+                    <span>Telefone: (11) 99999-9999</span>
+                </div>
+                <div>
+                    <i class="fas fa-envelope"></i>
+                    <span>Email: rh@techsolutions.com</span>
+                </div>
             </div>
             
             <div class="form-title">
-                <i class="fas fa-building"></i> DADOS CADASTRAIS
+                <i class="fas fa-id-card"></i> Formulário de Cadastro
             </div>
             
-            <form id="cadastroForm">
-                <!-- Dados Pessoais -->
+            <form id="employeeForm">
                 <div class="form-section">
-                    <h2 class="section-title"><i class="fas fa-user"></i> DADOS PESSOAIS</h2>
+                    <div class="section-title">
+                        <i class="fas fa-user"></i> Dados Pessoais
+                    </div>
                     
                     <div class="form-row">
-                        <div class="form-group full">
-                            <label for="nome" class="required">NOME COMPLETO</label>
+                        <div class="form-group medium">
+                            <label for="nome" class="required">Nome Completo</label>
                             <input type="text" id="nome" name="nome" required>
+                            <div class="error-message" id="nome-error">Por favor, insira seu nome completo</div>
+                        </div>
+                        <div class="form-group medium">
+                            <label for="cpf" class="required">CPF</label>
+                            <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+                            <div class="error-message" id="cpf-error">CPF inválido</div>
                         </div>
                     </div>
                     
                     <div class="form-row">
-                        <div class="form-group small">
-                            <label for="cpf" class="required">CPF</label>
-                            <input type="text" id="cpf" name="cpf" placeholder="000.000.000-00" required>
-                        </div>
-                        
                         <div class="form-group small">
                             <label for="rg" class="required">RG</label>
                             <input type="text" id="rg" name="rg" required>
                         </div>
-                        
                         <div class="form-group small">
-                            <label for="titulo" class="required">TÍTULO DE ELEITOR</label>
-                            <input type="text" id="titulo" name="titulo" required>
+                            <label for="orgaoEmissor" class="required">Órgão Emissor</label>
+                            <input type="text" id="orgaoEmissor" name="orgaoEmissor" required>
+                        </div>
+                        <div class="form-group small">
+                            <label for="dataEmissao" class="required">Data de Emissão</label>
+                            <input type="date" id="dataEmissao" name="dataEmissao" required>
                         </div>
                     </div>
                     
                     <div class="form-row">
                         <div class="form-group small">
-                            <label for="ctps" class="required">CARTEIRA DE TRABALHO</label>
-                            <input type="text" id="ctps" name="ctps" required>
+                            <label for="dataNascimento" class="required">Data de Nascimento</label>
+                            <input type="date" id="dataNascimento" name="dataNascimento" required>
                         </div>
-                        
                         <div class="form-group small">
-                            <label for="pis" class="required">PIS</label>
-                            <input type="text" id="pis" name="pis" required>
+                            <label for="naturalidade" class="required">Naturalidade</label>
+                            <input type="text" id="naturalidade" name="naturalidade" required>
                         </div>
-                        
                         <div class="form-group small">
-                            <label for="cor" class="required">COR / RAÇA</label>
-                            <select id="cor" name="cor" required>
-                                <option value="">Selecione</option>
-                                <option value="branca">Branca</option>
-                                <option value="preta">Preta</option>
-                                <option value="parda">Parda</option>
-                                <option value="amarela">Amarela</option>
-                                <option value="indigena">Indígena</option>
-                            </select>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group small date-group">
-                            <label for="nascimento" class="required">DATA DE NASCIMENTO</label>
-                            <input type="date" id="nascimento" name="nascimento" required>
-                        </div>
-                        
-                        <div class="form-group medium">
-                            <label for="cidade_nasc" class="required">CIDADE DE NASCIMENTO</label>
-                            <input type="text" id="cidade_nasc" name="cidade_nasc" required>
-                        </div>
-                        
-                        <div class="form-group xsmall">
-                            <label for="estado_nasc" class="required">ESTADO DE NASCIMENTO</label>
-                            <select id="estado_nasc" name="estado_nasc" required>
-                                <option value="">Selecione</option>
-                                <option value="SP">SP</option>
-                                <option value="RJ">RJ</option>
-                                <option value="MG">MG</option>
-                                <option value="ES">ES</option>
-                                <option value="PR">PR</option>
-                                <option value="SC">SC</option>
-                                <option value="RS">RS</option>
-                                <option value="MS">MS</option>
-                                <option value="MT">MT</option>
-                                <option value="GO">GO</option>
-                                <option value="DF">DF</option>
-                                <option value="BA">BA</option>
-                                <option value="SE">SE</option>
-                                <option value="AL">AL</option>
-                                <option value="PE">PE</option>
-                                <option value="PB">PB</option>
-                                <option value="RN">RN</option>
-                                <option value="CE">CE</option>
-                                <option value="PI">PI</option>
-                                <option value="MA">MA</option>
-                                <option value="PA">PA</option>
-                                <option value="AP">AP</option>
-                                <option value="AM">AM</option>
-                                <option value="AC">AC</option>
-                                <option value="RO">RO</option>
-                                <option value="RR">RR</option>
-                                <option value="TO">TO</option>
-                            </select>
+                            <label for="nacionalidade" class="required">Nacionalidade</label>
+                            <input type="text" id="nacionalidade" name="nacionalidade" value="Brasileiro" required>
                         </div>
                     </div>
                     
                     <div class="form-row">
                         <div class="form-group medium">
-                            <label for="nome_mae" class="required">NOME DA MÃE</label>
-                            <input type="text" id="nome_mae" name="nome_mae" required>
+                            <label for="nomePai">Nome do Pai</label>
+                            <input type="text" id="nomePai" name="nomePai">
                         </div>
-                        
                         <div class="form-group medium">
-                            <label for="nome_pai">NOME DO PAI</label>
-                            <input type="text" id="nome_pai" name="nome_pai">
+                            <label for="nomeMae" class="required">Nome da Mãe</label>
+                            <input type="text" id="nomeMae" name="nomeMae" required>
                         </div>
                     </div>
                     
                     <div class="form-row">
                         <div class="form-group small">
-                            <label for="estado_civil" class="required">ESTADO CIVIL</label>
-                            <select id="estado_civil" name="estado_civil" required>
+                            <label for="estadoCivil" class="required">Estado Civil</label>
+                            <select id="estadoCivil" name="estadoCivil" required>
                                 <option value="">Selecione</option>
                                 <option value="solteiro">Solteiro(a)</option>
                                 <option value="casado">Casado(a)</option>
@@ -838,279 +884,331 @@
                                 <option value="separado">Separado(a)</option>
                             </select>
                         </div>
-                        
                         <div class="form-group small">
-                            <label for="genero" class="required">GÊNERO</label>
+                            <label for="genero" class="required">Gênero</label>
                             <select id="genero" name="genero" required>
                                 <option value="">Selecione</option>
                                 <option value="masculino">Masculino</option>
                                 <option value="feminino">Feminino</option>
-                                <option value="nao_informar">Prefiro não informar</option>
+                                <option value="outro">Outro</option>
+                                <option value="naoInformar">Prefiro não informar</option>
                             </select>
                         </div>
-                        
                         <div class="form-group small">
-                            <label for="grau_instrucao" class="required">GRAU DE INSTRUÇÃO</label>
-                            <select id="grau_instrucao" name="grau_instrucao" required>
+                            <label for="tipoSanguineo">Tipo Sanguíneo</label>
+                            <select id="tipoSanguineo" name="tipoSanguineo">
                                 <option value="">Selecione</option>
-                                <option value="fundamental_incompleto">Fundamental Incompleto</option>
-                                <option value="fundamental_completo">Fundamental Completo</option>
-                                <option value="medio_incompleto">Médio Incompleto</option>
-                                <option value="medio_completo">Médio Completo</option>
-                                <option value="superior_incompleto">Superior Incompleto</option>
-                                <option value="superior_completo">Superior Completo</option>
-                                <option value="pos_graduacao">Pós-graduação</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-map-marker-alt"></i> Endereço
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group medium">
+                            <label for="cep" class="required">CEP</label>
+                            <input type="text" id="cep" name="cep" placeholder="00000-000" required>
+                        </div>
+                        <div class="form-group medium">
+                            <label for="logradouro" class="required">Logradouro</label>
+                            <input type="text" id="logradouro" name="logradouro" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group small">
+                            <label for="numero" class="required">Número</label>
+                            <input type="text" id="numero" name="numero" required>
+                        </div>
+                        <div class="form-group medium">
+                            <label for="complemento">Complemento</label>
+                            <input type="text" id="complemento" name="complemento">
+                        </div>
+                        <div class="form-group medium">
+                            <label for="bairro" class="required">Bairro</label>
+                            <input type="text" id="bairro" name="bairro" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group medium">
+                            <label for="cidade" class="required">Cidade</label>
+                            <input type="text" id="cidade" name="cidade" required>
+                        </div>
+                        <div class="form-group medium">
+                            <label for="estado" class="required">Estado</label>
+                            <select id="estado" name="estado" required>
+                                <option value="">Selecione</option>
+                                <option value="AC">Acre</option>
+                                <option value="AL">Alagoas</option>
+                                <option value="AP">Amapá</option>
+                                <option value="AM">Amazonas</option>
+                                <option value="BA">Bahia</option>
+                                <option value="CE">Ceará</option>
+                                <option value="DF">Distrito Federal</option>
+                                <option value="ES">Espírito Santo</option>
+                                <option value="GO">Goiás</option>
+                                <option value="MA">Maranhão</option>
+                                <option value="MT">Mato Grosso</option>
+                                <option value="MS">Mato Grosso do Sul</option>
+                                <option value="MG">Minas Gerais</option>
+                                <option value="PA">Pará</option>
+                                <option value="PB">Paraíba</option>
+                                <option value="PR">Paraná</option>
+                                <option value="PE">Pernambuco</option>
+                                <option value="PI">Piauí</option>
+                                <option value="RJ">Rio de Janeiro</option>
+                                <option value="RN">Rio Grande do Norte</option>
+                                <option value="RS">Rio Grande do Sul</option>
+                                <option value="RO">Rondônia</option>
+                                <option value="RR">Roraima</option>
+                                <option value="SC">Santa Catarina</option>
+                                <option value="SP">São Paulo</option>
+                                <option value="SE">Sergipe</option>
+                                <option value="TO">Tocantins</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-phone"></i> Contato
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group medium">
+                            <label for="telefone" class="required">Telefone</label>
+                            <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
+                        </div>
+                        <div class="form-group medium">
+                            <label for="celular" class="required">Celular</label>
+                            <input type="tel" id="celular" name="celular" placeholder="(00) 00000-0000" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <label for="email" class="required">E-mail</label>
+                            <input type="email" id="email" name="email" placeholder="seu.email@exemplo.com" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-graduation-cap"></i> Formação Acadêmica
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group medium">
+                            <label for="escolaridade" class="required">Escolaridade</label>
+                            <select id="escolaridade" name="escolaridade" required>
+                                <option value="">Selecione</option>
+                                <option value="fundamental">Fundamental Incompleto</option>
+                                <option value="fundamentalCompleto">Fundamental Completo</option>
+                                <option value="medio">Médio Incompleto</option>
+                                <option value="medioCompleto">Médio Completo</option>
+                                <option value="superior">Superior Incompleto</option>
+                                <option value="superiorCompleto">Superior Completo</option>
+                                <option value="posGraduacao">Pós-graduação</option>
                                 <option value="mestrado">Mestrado</option>
                                 <option value="doutorado">Doutorado</option>
                             </select>
                         </div>
+                        <div class="form-group medium">
+                            <label for="curso">Curso Superior</label>
+                            <input type="text" id="curso" name="curso">
+                        </div>
                     </div>
-                </div>
-                
-                <!-- RECONHECIMENTO FACIAL -->
-                <div class="facial-recognition">
-                    <h3><i class="fas fa-user-circle"></i> RECONHECIMENTO FACIAL</h3>
-                    
-                    <div class="facial-container">
-                        <video id="video" autoplay muted playsinline></video>
-                        <canvas id="canvas"></canvas>
-                    </div>
-                    
-                    <div class="facial-controls">
-                        <button id="capture-btn" disabled>
-                            <i class="fas fa-camera"></i> Capturar Imagem
-                        </button>
-                        
-                        <button id="retry-btn">
-                            <i class="fas fa-redo"></i> Tentar Novamente
-                        </button>
-                    </div>
-                    
-                    <div id="recognition-status" class="recognition-status status-pending">
-                        <i class="fas fa-sync-alt fa-spin"></i> Iniciando câmera...
-                    </div>
-                    
-                    <div id="recognition-result" class="recognition-result">
-                        <p><strong>Resultado:</strong> <span id="result-text"></span></p>
-                        <img id="captured-img" src="" alt="Imagem capturada">
-                    </div>
-                </div>
-                
-                <!-- Contato -->
-                <div class="form-section">
-                    <h2 class="section-title"><i class="fas fa-phone-alt"></i> CONTATO</h2>
                     
                     <div class="form-row">
                         <div class="form-group full">
-                            <label for="endereco" class="required">ENDEREÇO COMPLETO</label>
-                            <input type="text" id="endereco" name="endereco" placeholder="Rua, número, bairro" required>
-                        </div>
-                    </div>
-                    
-                    <div class="form-row">
-                        <div class="form-group medium">
-                            <label for="cidade" class="required">CIDADE</label>
-                            <input type="text" id="cidade" name="cidade" required>
-                        </div>
-                        
-                        <div class="form-group xsmall">
-                            <label for="estado" class="required">ESTADO</label>
-                            <select id="estado" name="estado" required>
-                                <option value="">Selecione</option>
-                                <option value="SP">SP</option>
-                                <option value="RJ">RJ</option>
-                                <option value="MG">MG</option>
-                                <option value="ES">ES</option>
-                                <option value="PR">PR</option>
-                                <option value="SC">SC</option>
-                                <option value="RS">RS</option>
-                                <option value="MS">MS</option>
-                                <option value="MT">MT</option>
-                                <option value="GO">GO</option>
-                                <option value="DF">DF</option>
-                                <option value="BA">BA</option>
-                                <option value="SE">SE</option>
-                                <option value="AL">AL</option>
-                                <option value="PE">PE</option>
-                                <option value="PB">PB</option>
-                                <option value="RN">RN</option>
-                                <option value="CE">CE</option>
-                                <option value="PI">PI</option>
-                                <option value="MA">MA</option>
-                                <option value="PA">PA</option>
-                                <option value="AP">AP</option>
-                                <option value="AM">AM</option>
-                                <option value="AC">AC</option>
-                                <option value="RO">RO</option>
-                                <option value="RR">RR</option>
-                                <option value="TO">TO</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group small">
-                            <label for="cep" class="required">CEP</label>
-                            <input type="text" id="cep" name="cep" placeholder="00000-000" required>
+                            <label for="instituicao">Instituição de Ensino</label>
+                            <input type="text" id="instituicao" name="instituicao">
                         </div>
                     </div>
                     
                     <div class="form-row">
                         <div class="form-group small">
-                            <label for="telefone" class="required">TELEFONE</label>
-                            <input type="tel" id="telefone" name="telefone" placeholder="(00) 00000-0000" required>
-                        </div>
-                        
-                        <div class="form-group small">
-                            <label for="celular" class="required">CELULAR</label>
-                            <input type="tel" id="celular" name="celular" placeholder="(00) 00000-0000" required>
-                        </div>
-                        
-                        <div class="form-group small">
-                            <label for="email" class="required">E-MAIL</label>
-                            <input type="email" id="email" name="email" required>
+                            <label for="anoConclusao">Ano de Conclusão</label>
+                            <input type="number" id="anoConclusao" name="anoConclusao" min="1950" max="2025">
                         </div>
                     </div>
                 </div>
                 
-                <!-- Dados Bancários -->
                 <div class="form-section">
-                    <h2 class="section-title"><i class="fas fa-piggy-bank"></i> DADOS BANCÁRIOS</h2>
+                    <div class="section-title">
+                        <i class="fas fa-briefcase"></i> Experiência Profissional
+                    </div>
                     
-                    <div class="form-row">
-                        <div class="form-group medium">
-                            <label for="banco" class="required">BANCO</label>
-                            <select id="banco" name="banco" required>
-                                <option value="">Selecione o banco</option>
-                                <option value="001">Banco do Brasil</option>
-                                <option value="033">Santander</option>
-                                <option value="237">Bradesco</option>
-                                <option value="341">Itaú</option>
-                                <option value="104">Caixa Econômica Federal</option>
-                                <option value="212">Original</option>
-                                <option value="077">Inter</option>
-                                <option value="422">Safra</option>
-                                <option value="655">Votorantim</option>
-                                <option value="260">Nubank</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group small">
-                            <label for="agencia" class="required">AGÊNCIA</label>
-                            <input type="text" id="agencia" name="agencia" required>
-                        </div>
-                        
-                        <div class="form-group small">
-                            <label for="conta" class="required">CONTA</label>
-                            <input type="text" id="conta" name="conta" required>
+                    <div class="instructions">
+                        <p><i class="fas fa-info-circle"></i> Liste suas experiências profissionais mais relevantes, começando pela mais recente.</p>
+                    </div>
+                    
+                    <div id="experienciasContainer">
+                        <div class="form-row experiencia-item">
+                            <div class="form-group medium">
+                                <label class="required">Empresa</label>
+                                <input type="text" name="empresa[]" required>
+                            </div>
+                            <div class="form-group medium">
+                                <label class="required">Cargo</label>
+                                <input type="text" name="cargo[]" required>
+                            </div>
+                            <div class="form-group small">
+                                <label class="required">Data Início</label>
+                                <input type="date" name="dataInicio[]" required>
+                            </div>
+                            <div class="form-group small">
+                                <label>Data Término</label>
+                                <input type="date" name="dataTermino[]">
+                            </div>
+                            <div class="form-group small">
+                                <label>&nbsp;</label>
+                                <button type="button" class="btn-remove remove-experiencia"><i class="fas fa-trash"></i> Remover</button>
+                            </div>
                         </div>
                     </div>
                     
-                    <div class="form-row">
-                        <div class="form-group small">
-                            <label for="tipo_conta" class="required">TIPO DE CONTA</label>
-                            <select id="tipo_conta" name="tipo_conta" required>
-                                <option value="">Selecione</option>
-                                <option value="corrente">Corrente</option>
-                                <option value="poupanca">Poupança</option>
-                                <option value="salario">Salário</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group medium">
-                            <label for="titular" class="required">TITULAR DA CONTA</label>
-                            <input type="text" id="titular" name="titular" required>
-                        </div>
-                        
-                        <div class="form-group small">
-                            <label for="cpf_titular" class="required">CPF DO TITULAR</label>
-                            <input type="text" id="cpf_titular" name="cpf_titular" placeholder="000.000.000-00" required>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Dependentes -->
-                <div class="form-section">
-                    <h2 class="section-title"><i class="fas fa-users"></i> DEPENDENTES</h2>
-                    
-                    <button type="button" class="btn-add" id="addDependente">
-                        <i class="fas fa-plus-circle"></i> ADICIONAR DEPENDENTE
+                    <button type="button" id="addExperiencia" class="btn-add">
+                        <i class="fas fa-plus"></i> Adicionar Experiência
                     </button>
+                </div>
+                
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-users"></i> Dependentes
+                    </div>
+                    
+                    <div class="instructions">
+                        <p><i class="fas fa-info-circle"></i> Adicione informações sobre seus dependentes legais (cônjuge, filhos, etc.).</p>
+                    </div>
                     
                     <div id="dependentesContainer">
-                        <div class="dependente-item">
-                            <div class="dependente-header">
-                                <div class="dependente-title">DEPENDENTE #1</div>
-                                <button type="button" class="btn-remove removeDependente">
-                                    <i class="fas fa-trash"></i> REMOVER
+                        <div class="dependente-card">
+                            <div class="dependente-card-header">
+                                <div class="dependente-card-title">Dependente #1</div>
+                                <button type="button" class="remove-dependente">
+                                    <i class="fas fa-times"></i>
                                 </button>
                             </div>
                             
                             <div class="form-row">
                                 <div class="form-group medium">
-                                    <label for="nome_dependente" class="required">NOME COMPLETO</label>
-                                    <input type="text" name="nome_dependente[]" required>
+                                    <label class="required">Nome Completo</label>
+                                    <input type="text" name="dependenteNome[]" required>
                                 </div>
-                                
-                                <div class="form-group small">
-                                    <label for="cpf_dependente" class="required">CPF</label>
-                                    <input type="text" name="cpf_dependente[]" placeholder="000.000.000-00" required>
-                                </div>
-                                
-                                <div class="form-group small date-group">
-                                    <label for="nascimento_dependente" class="required">DATA NASC.</label>
-                                    <input type="date" name="nascimento_dependente[]" required>
-                                </div>
-                            </div>
-                            
-                            <div class="form-row">
-                                <div class="form-group small">
-                                    <label for="parentesco" class="required">PARENTESCO</label>
-                                    <select name="parentesco[]" required>
+                                <div class="form-group medium">
+                                    <label class="required">Parentesco</label>
+                                    <select name="dependenteParentesco[]" required>
                                         <option value="">Selecione</option>
-                                        <option value="filho">Filho(a)</option>
                                         <option value="conjuge">Cônjuge</option>
+                                        <option value="filho">Filho(a)</option>
                                         <option value="pai">Pai</option>
                                         <option value="mae">Mãe</option>
                                         <option value="outro">Outro</option>
                                     </select>
                                 </div>
-                                
-                                <div class="form-group medium">
-                                    <label for="escolaridade">ESCOLARIDADE</label>
-                                    <select name="escolaridade[]">
-                                        <option value="">Selecione</option>
-                                        <option value="fundamental_incompleto">Fundamental Incompleto</option>
-                                        <option value="fundamental_completo">Fundamental Completo</option>
-                                        <option value="medio_incompleto">Médio Incompleto</option>
-                                        <option value="medio_completo">Médio Completo</option>
-                                        <option value="superior_incompleto">Superior Incompleto</option>
-                                        <option value="superior_completo">Superior Completo</option>
-                                    </select>
+                            </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group small">
+                                    <label class="required">Data de Nascimento</label>
+                                    <input type="date" name="dependenteNascimento[]" required>
                                 </div>
+                                <div class="form-group small">
+                                    <label>CPF</label>
+                                    <input type="text" name="dependenteCpf[]" placeholder="000.000.000-00">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" id="addDependente" class="btn-add">
+                        <i class="fas fa-plus"></i> Adicionar Dependente
+                    </button>
+                </div>
+                
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-camera"></i> Reconhecimento Facial
+                    </div>
+                    
+                    <div class="facial-recognition">
+                        <div class="facial-header">
+                            <i class="fas fa-user-circle"></i> Captura de Imagem para Identificação
+                        </div>
+                        
+                        <div class="facial-content">
+                            <div class="camera-container">
+                                <div class="camera-preview" id="cameraPreview">
+                                    <div class="camera-placeholder">
+                                        <i class="fas fa-camera"></i>
+                                        <p>Clique em Iniciar Câmera</p>
+                                    </div>
+                                    <video id="video" autoplay playsinline style="display: none;"></video>
+                                    <canvas id="canvas" style="display: none;"></canvas>
+                                    <img id="capturedImage" class="captured-image" alt="Imagem capturada">
+                                </div>
+                                
+                                <div class="camera-controls">
+                                    <button type="button" id="startCamera" class="camera-btn capture">
+                                        <i class="fas fa-video"></i> Iniciar Câmera
+                                    </button>
+                                    <button type="button" id="captureBtn" class="camera-btn capture" disabled>
+                                        <i class="fas fa-camera"></i> Capturar
+                                    </button>
+                                    <button type="button" id="retakeBtn" class="camera-btn retake" disabled>
+                                        <i class="fas fa-redo"></i> Repetir
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="facial-instructions">
+                                <h3><i class="fas fa-info-circle"></i> Instruções para Captura</h3>
+                                <ul class="instructions-list">
+                                    <li><i class="fas fa-check-circle"></i> Certifique-se de estar em um ambiente bem iluminado</li>
+                                    <li><i class="fas fa-check-circle"></i> Olhe diretamente para a câmera</li>
+                                    <li><i class="fas fa-check-circle"></i> Mantenha o rosto totalmente visível</li>
+                                    <li><i class="fas fa-check-circle"></i> Remova óculos escuros ou chapéus</li>
+                                    <li><i class="fas fa-check-circle"></i> Mantenha uma expressão neutra</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Documentos -->
                 <div class="form-section">
-                    <h2 class="section-title"><i class="fas fa-file-alt"></i> DOCUMENTOS</h2>
-                    
-                    <div class="instructions">
-                        <i class="fas fa-info-circle"></i> Anexe cópias legíveis dos documentos solicitados. Formatos aceitos: PDF, JPG, PNG (tamanho máximo: 5MB por arquivo).
+                    <div class="section-title">
+                        <i class="fas fa-file-upload"></i> Documentos
                     </div>
                     
                     <div class="upload-container">
                         <div class="upload-header">
-                            <h3>Documentos obrigatórios</h3>
-                            <button type="button" class="upload-button" id="uploadDocumentos">
-                                <i class="fas fa-cloud-upload-alt"></i> SELECIONAR ARQUIVOS
+                            <h3><i class="fas fa-cloud-upload-alt"></i> Upload de Documentos</h3>
+                            <button type="button" id="uploadBtn" class="upload-button">
+                                <i class="fas fa-folder-open"></i> Selecionar Arquivos
                             </button>
                         </div>
                         
                         <div class="upload-area" id="dropArea">
-                            <i class="fas fa-file-upload"></i>
-                            <h3>Arraste e solte os arquivos aqui</h3>
-                            <p>ou clique para selecionar</p>
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <h3>Arraste e solte seus arquivos aqui</h3>
+                            <p>ou clique para procurar</p>
+                            <input type="file" id="fileInput" multiple style="display: none;">
                         </div>
                         
                         <div class="file-list" id="fileList">
@@ -1118,444 +1216,570 @@
                                 <div class="file-info">
                                     <i class="fas fa-file-pdf file-icon"></i>
                                     <div>
-                                        <div class="file-name">RG.pdf</div>
-                                        <div class="file-size">1.2 MB</div>
+                                        <div class="file-name">Nenhum arquivo selecionado</div>
+                                        <div class="file-size">Faça upload dos documentos necessários</div>
                                     </div>
                                 </div>
-                                <button class="file-remove">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                            <div class="file-item">
-                                <div class="file-info">
-                                    <i class="fas fa-file-image file-icon"></i>
-                                    <div>
-                                        <div class="file-name">CPF.jpg</div>
-                                        <div class="file-size">0.8 MB</div>
-                                    </div>
-                                </div>
-                                <button class="file-remove">
-                                    <i class="fas fa-times"></i>
-                                </button>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="progress-container" id="progressContainer">
-                        <p>Enviando documentos...</p>
-                        <div class="progress-bar">
-                            <div class="progress-fill" id="progressFill"></div>
-                        </div>
-                        <p id="progressText">0% completo</p>
+                    <div class="instructions">
+                        <p><i class="fas fa-info-circle"></i> Documentos necessários: RG, CPF, Comprovante de Residência, Certidão de Nascimento/Casamento, Carteira de Trabalho, Diploma.</p>
                     </div>
                 </div>
                 
-                <!-- Botões de ação -->
+                <div class="form-section">
+                    <div class="section-title">
+                        <i class="fas fa-file-signature"></i> Declarações Finais
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <div class="date-group">
+                                <label>Declaro que as informações fornecidas são verdadeiras e estou ciente que falsas declarações sujeitam-me às penalidades legais.</label>
+                                <div style="margin-top: 15px; display: flex; align-items: center; gap: 15px;">
+                                    <div style="flex: 1;">
+                                        <label for="dataDeclaracao" class="required">Data</label>
+                                        <input type="date" id="dataDeclaracao" name="dataDeclaracao" required>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <label for="cidadeDeclaracao" class="required">Cidade</label>
+                                        <input type="text" id="cidadeDeclaracao" name="cidadeDeclaracao" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group full">
+                            <div class="date-group">
+                                <label>Autorizo a empresa a utilizar minhas informações para fins de registro e conformidade legal.</label>
+                                <div style="margin-top: 15px; display: flex; align-items: center; gap: 15px;">
+                                    <div style="flex: 1;">
+                                        <label for="dataAutorizacao" class="required">Data</label>
+                                        <input type="date" id="dataAutorizacao" name="dataAutorizacao" required>
+                                    </div>
+                                    <div style="flex: 1;">
+                                        <label for="cidadeAutorizacao" class="required">Cidade</label>
+                                        <input type="text" id="cidadeAutorizacao" name="cidadeAutorizacao" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="btn-group">
-                    <button type="button" class="btn btn-whatsapp" id="btnWhatsapp">
-                        <i class="fab fa-whatsapp"></i> ENVIAR VIA WHATSAPP
+                    <button type="button" id="generatePdf" class="btn">
+                        <i class="fas fa-file-pdf"></i> Gerar PDF
                     </button>
+                    <button type="button" id="sendWhatsApp" class="btn btn-whatsapp">
+                        <i class="fab fa-whatsapp"></i> Enviar via WhatsApp
+                    </button>
+                    <button type="submit" id="submitForm" class="btn">
+                        <i class="fas fa-paper-plane"></i> Enviar Formulário
+                    </button>
+                </div>
+                
+                <div class="success-message" id="successMessage">
+                    <i class="fas fa-check-circle"></i> Formulário enviado com sucesso!
                 </div>
             </form>
             
             <div class="footer-note">
-                <i class="fas fa-exclamation-triangle"></i> Todos os campos marcados com * são obrigatórios. Informações incorretas podem invalidar o cadastro.
+                <i class="fas fa-exclamation-triangle"></i> Todos os campos marcados com * são obrigatórios
             </div>
         </div>
     </div>
-
+    
+    <div class="toast" id="toast">
+        <i class="fas fa-check-circle"></i> <span id="toastMessage">Operação realizada com sucesso!</span>
+    </div>
+    
     <script>
-        // =============== RECONHECIMENTO FACIAL ===============
-        const video = document.getElementById('video');
-        const canvas = document.getElementById('canvas');
-        const captureBtn = document.getElementById('capture-btn');
-        const retryBtn = document.getElementById('retry-btn');
-        const statusDiv = document.getElementById('recognition-status');
-        const resultDiv = document.getElementById('recognition-result');
-        const resultText = document.getElementById('result-text');
-        const capturedImg = document.getElementById('captured-img');
-        const ctx = canvas.getContext('2d');
+        // Variáveis globais
+        let stream = null;
+        let capturedPhoto = null;
+        let uploadedFiles = [];
+        let dependentCounter = 1;
+        let experienceCounter = 1;
         
-        // Tamanhos ajustados para o canvas
-        const width = 600;
-        const height = 300;
-        video.width = width;
-        video.height = height;
-        canvas.width = width;
-        canvas.height = height;
+        // Inicialização quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar máscaras de entrada
+            setupInputMasks();
+            
+            // Configurar eventos
+            setupEventListeners();
+        });
         
-        // Iniciar a câmera
-        async function initCamera() {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ 
-                    video: { 
-                        width: { ideal: width },
-                        height: { ideal: height }
-                    }, 
-                    audio: false 
+        function setupInputMasks() {
+            // Configurar máscara para CPF
+            const cpfInput = document.getElementById('cpf');
+            cpfInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 11) value = value.slice(0, 11);
+                
+                if (value.length > 9) {
+                    value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+                } else if (value.length > 6) {
+                    value = value.replace(/(\d{3})(\d{3})(\d+)/, '$1.$2.$3');
+                } else if (value.length > 3) {
+                    value = value.replace(/(\d{3})(\d+)/, '$1.$2');
+                }
+                e.target.value = value;
+            });
+            
+            // Configurar máscara para telefone
+            const phoneInputs = document.querySelectorAll('input[type="tel"]');
+            phoneInputs.forEach(input => {
+                input.addEventListener('input', function(e) {
+                    let value = e.target.value.replace(/\D/g, '');
+                    if (value.length > 11) value = value.slice(0, 11);
+                    
+                    if (value.length > 10) {
+                        value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+                    } else if (value.length > 6) {
+                        value = value.replace(/(\d{2})(\d{4})(\d+)/, '($1) $2-$3');
+                    } else if (value.length > 2) {
+                        value = value.replace(/(\d{2})(\d+)/, '($1) $2');
+                    }
+                    e.target.value = value;
                 });
+            });
+            
+            // Configurar máscara para CEP
+            const cepInput = document.getElementById('cep');
+            cepInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 8) value = value.slice(0, 8);
+                
+                if (value.length > 5) {
+                    value = value.replace(/(\d{5})(\d+)/, '$1-$2');
+                }
+                e.target.value = value;
+            });
+        }
+        
+        function setupEventListeners() {
+            // Botão para adicionar dependente
+            document.getElementById('addDependente').addEventListener('click', addDependente);
+            
+            // Botão para adicionar experiência
+            document.getElementById('addExperiencia').addEventListener('click', addExperiencia);
+            
+            // Botões da câmera
+            document.getElementById('startCamera').addEventListener('click', startCamera);
+            document.getElementById('captureBtn').addEventListener('click', capturePhoto);
+            document.getElementById('retakeBtn').addEventListener('click', retakePhoto);
+            
+            // Upload de arquivos
+            document.getElementById('uploadBtn').addEventListener('click', triggerFileInput);
+            document.getElementById('fileInput').addEventListener('change', handleFileSelect);
+            document.getElementById('dropArea').addEventListener('dragover', handleDragOver);
+            document.getElementById('dropArea').addEventListener('drop', handleFileDrop);
+            
+            // Botões de ação
+            document.getElementById('generatePdf').addEventListener('click', generatePdf);
+            document.getElementById('sendWhatsApp').addEventListener('click', sendViaWhatsApp);
+            document.getElementById('submitForm').addEventListener('click', submitForm);
+            
+            // Remover dependentes e experiências (delegação de eventos)
+            document.getElementById('dependentesContainer').addEventListener('click', function(e) {
+                if (e.target.closest('.remove-dependente')) {
+                    e.target.closest('.dependente-card').remove();
+                    updateDependenteTitles();
+                }
+            });
+            
+            document.getElementById('experienciasContainer').addEventListener('click', function(e) {
+                if (e.target.closest('.remove-experiencia')) {
+                    e.target.closest('.form-row').remove();
+                    updateExperienciaTitles();
+                }
+            });
+        }
+        
+        // Funções para dependentes
+        function addDependente() {
+            dependentCounter++;
+            const container = document.getElementById('dependentesContainer');
+            const newDependente = document.createElement('div');
+            newDependente.className = 'dependente-card';
+            newDependente.innerHTML = `
+                <div class="dependente-card-header">
+                    <div class="dependente-card-title">Dependente #${dependentCounter}</div>
+                    <button type="button" class="remove-dependente">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group medium">
+                        <label class="required">Nome Completo</label>
+                        <input type="text" name="dependenteNome[]" required>
+                    </div>
+                    <div class="form-group medium">
+                        <label class="required">Parentesco</label>
+                        <select name="dependenteParentesco[]" required>
+                            <option value="">Selecione</option>
+                            <option value="conjuge">Cônjuge</option>
+                            <option value="filho">Filho(a)</option>
+                            <option value="pai">Pai</option>
+                            <option value="mae">Mãe</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group small">
+                        <label class="required">Data de Nascimento</label>
+                        <input type="date" name="dependenteNascimento[]" required>
+                    </div>
+                    <div class="form-group small">
+                        <label>CPF</label>
+                        <input type="text" name="dependenteCpf[]" placeholder="000.000.000-00">
+                    </div>
+                </div>
+            `;
+            container.appendChild(newDependente);
+            showToast('Dependente adicionado com sucesso!');
+        }
+        
+        function updateDependenteTitles() {
+            const dependentes = document.querySelectorAll('.dependente-card-title');
+            dependentes.forEach((title, index) => {
+                title.textContent = `Dependente #${index + 1}`;
+            });
+            dependentCounter = dependentes.length;
+        }
+        
+        // Funções para experiências
+        function addExperiencia() {
+            experienceCounter++;
+            const container = document.getElementById('experienciasContainer');
+            const newExperiencia = document.createElement('div');
+            newExperiencia.className = 'form-row experiencia-item';
+            newExperiencia.innerHTML = `
+                <div class="form-group medium">
+                    <label class="required">Empresa</label>
+                    <input type="text" name="empresa[]" required>
+                </div>
+                <div class="form-group medium">
+                    <label class="required">Cargo</label>
+                    <input type="text" name="cargo[]" required>
+                </div>
+                <div class="form-group small">
+                    <label class="required">Data Início</label>
+                    <input type="date" name="dataInicio[]" required>
+                </div>
+                <div class="form-group small">
+                    <label>Data Término</label>
+                    <input type="date" name="dataTermino[]">
+                </div>
+                <div class="form-group small">
+                    <label>&nbsp;</label>
+                    <button type="button" class="btn-remove remove-experiencia"><i class="fas fa-trash"></i> Remover</button>
+                </div>
+            `;
+            container.appendChild(newExperiencia);
+            showToast('Experiência adicionada com sucesso!');
+        }
+        
+        function updateExperienciaTitles() {
+            const experiencias = document.querySelectorAll('.experiencia-item');
+            experienceCounter = experiencias.length;
+        }
+        
+        // Funções para câmera
+        async function startCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                const video = document.getElementById('video');
+                video.style.display = 'block';
                 video.srcObject = stream;
-                captureBtn.disabled = false;
-                statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> Câmera pronta para captura';
-                statusDiv.className = 'recognition-status status-success';
+                
+                // Esconder placeholder
+                document.querySelector('.camera-placeholder').style.display = 'none';
+                
+                // Ativar botões
+                document.getElementById('captureBtn').disabled = false;
+                document.getElementById('retakeBtn').disabled = true;
+                document.getElementById('startCamera').disabled = true;
+                
+                showToast('Câmera iniciada com sucesso!');
             } catch (err) {
-                console.error("Erro ao acessar a câmera:", err);
-                statusDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Erro ao acessar a câmera';
-                statusDiv.className = 'recognition-status status-error';
-                captureBtn.disabled = true;
+                console.error('Erro ao acessar a câmera:', err);
+                showToast('Erro ao acessar a câmera. Verifique as permissões.', 'error');
             }
         }
         
-        // Capturar imagem
-        captureBtn.addEventListener('click', () => {
-            // Desenhar a imagem atual do vídeo no canvas
-            ctx.drawImage(video, 0, 0, width, height);
+        function capturePhoto() {
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const capturedImage = document.getElementById('capturedImage');
             
-            // Obter a imagem como URL de dados
-            const imageData = canvas.toDataURL('image/png');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
             
-            // Exibir preview
-            capturedImg.src = imageData;
-            resultDiv.style.display = 'block';
+            // Parar a câmera
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
             
-            // Simular processamento facial
-            statusDiv.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Processando reconhecimento facial...';
-            statusDiv.className = 'recognition-status status-pending';
+            // Mostrar imagem capturada
+            capturedPhoto = canvas.toDataURL('image/png');
+            capturedImage.src = capturedPhoto;
+            capturedImage.style.display = 'block';
+            video.style.display = 'none';
             
-            setTimeout(() => {
-                // Simular resultado (sucesso ou falha aleatória)
-                const success = Math.random() > 0.3;
-                
-                if (success) {
-                    resultText.textContent = 'Reconhecimento facial realizado com sucesso!';
-                    resultText.style.color = '#2e7d32';
-                    statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> Reconhecimento facial validado';
-                    statusDiv.className = 'recognition-status status-success';
-                    captureBtn.disabled = true;
-                    retryBtn.style.display = 'none';
-                    
-                    // Salvar imagem no localStorage (simulação)
-                    localStorage.setItem('facialRecognitionImage', imageData);
-                } else {
-                    resultText.textContent = 'Falha no reconhecimento. Tente novamente.';
-                    resultText.style.color = '#c62828';
-                    statusDiv.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Falha no reconhecimento facial';
-                    statusDiv.className = 'recognition-status status-error';
-                    retryBtn.style.display = 'flex';
-                }
-            }, 2000);
-        });
-        
-        // Tentar novamente
-        retryBtn.addEventListener('click', () => {
-            resultDiv.style.display = 'none';
-            statusDiv.innerHTML = '<i class="fas fa-check-circle"></i> Câmera pronta para nova tentativa';
-            statusDiv.className = 'recognition-status status-success';
-            retryBtn.style.display = 'none';
-        });
-        
-        // Inicializar ao carregar a página
-        window.addEventListener('DOMContentLoaded', initCamera);
-        
-        // =============== FORMULÁRIO ===============
-        // Contador para dependentes
-        let dependenteCounter = 1;
-        
-        // Adicionar novo dependente
-        document.getElementById('addDependente').addEventListener('click', function() {
-            dependenteCounter++;
+            // Atualizar botões
+            document.getElementById('captureBtn').disabled = true;
+            document.getElementById('retakeBtn').disabled = false;
+            document.getElementById('startCamera').disabled = false;
             
-            const dependentesContainer = document.getElementById('dependentesContainer');
-            const newDependente = document.querySelector('.dependente-item').cloneNode(true);
-            
-            // Atualizar título
-            newDependente.querySelector('.dependente-title').textContent = `DEPENDENTE #${dependenteCounter}`;
-            
-            // Limpar campos
-            const inputs = newDependente.querySelectorAll('input, select');
-            inputs.forEach(input => {
-                if (input.type !== 'button') input.value = '';
-            });
-            
-            // Adicionar botão de remoção funcional
-            newDependente.querySelector('.removeDependente').addEventListener('click', function() {
-                if (dependenteCounter > 1) {
-                    newDependente.remove();
-                    dependenteCounter--;
-                    updateDependenteNumbers();
-                } else {
-                    alert('É necessário ter pelo menos um dependente cadastrado.');
-                }
-            });
-            
-            dependentesContainer.appendChild(newDependente);
-            updateDependenteNumbers();
-        });
-        
-        // Atualizar números dos dependentes
-        function updateDependenteNumbers() {
-            const dependenteItems = document.querySelectorAll('.dependente-item');
-            dependenteItems.forEach((item, index) => {
-                item.querySelector('.dependente-title').textContent = `DEPENDENTE #${index + 1}`;
-            });
+            showToast('Foto capturada com sucesso!');
         }
         
-        // Remover dependentes
-        document.querySelectorAll('.removeDependente').forEach(button => {
-            button.addEventListener('click', function() {
-                if (dependenteCounter > 1) {
-                    this.closest('.dependente-item').remove();
-                    dependenteCounter--;
-                    updateDependenteNumbers();
-                } else {
-                    alert('É necessário ter pelo menos um dependente cadastrado.');
-                }
-            });
-        });
+        function retakePhoto() {
+            const video = document.getElementById('video');
+            const capturedImage = document.getElementById('capturedImage');
+            
+            capturedImage.style.display = 'none';
+            video.style.display = 'block';
+            
+            // Reiniciar a câmera
+            startCamera();
+        }
         
-        // Upload de documentos
-        const dropArea = document.getElementById('dropArea');
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.multiple = true;
-        fileInput.style.display = 'none';
+        // Funções para upload de arquivos
+        function triggerFileInput() {
+            document.getElementById('fileInput').click();
+        }
         
-        document.getElementById('uploadDocumentos').addEventListener('click', function() {
-            fileInput.click();
-        });
+        function handleFileSelect(e) {
+            const files = e.target.files;
+            handleFiles(files);
+        }
         
-        dropArea.addEventListener('click', function() {
-            fileInput.click();
-        });
-        
-        fileInput.addEventListener('change', handleFiles);
-        
-        // Arrastar e soltar
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, preventDefaults, false);
-        });
-        
-        function preventDefaults(e) {
+        function handleDragOver(e) {
             e.preventDefault();
             e.stopPropagation();
+            e.dataTransfer.dropEffect = 'copy';
+            document.getElementById('dropArea').style.borderColor = '#1a2980';
+            document.getElementById('dropArea').style.backgroundColor = '#d1ecff';
         }
         
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropArea.addEventListener(eventName, highlight, false);
-        });
-        
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropArea.addEventListener(eventName, unhighlight, false);
-        });
-        
-        function highlight() {
-            dropArea.style.borderColor = '#1a2980';
-            dropArea.style.backgroundColor = '#e9f7fe';
-        }
-        
-        function unhighlight() {
-            dropArea.style.borderColor = '#ced4da';
-            dropArea.style.backgroundColor = '#f8f9fa';
-        }
-        
-        dropArea.addEventListener('drop', handleDrop, false);
-        
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
+        function handleFileDrop(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            document.getElementById('dropArea').style.borderColor = '#ced4da';
+            document.getElementById('dropArea').style.backgroundColor = '#f8f9fa';
+            
+            const files = e.dataTransfer.files;
             handleFiles(files);
         }
         
         function handleFiles(files) {
-            const fileList = document.getElementById('fileList');
+            if (files.length === 0) return;
             
-            for (let i = 0; i < files.length; i++) {
-                const file = files[i];
+            uploadedFiles = Array.from(files);
+            updateFileList();
+            showToast(`${files.length} arquivo(s) selecionado(s) com sucesso!`);
+        }
+        
+        function updateFileList() {
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '';
+            
+            if (uploadedFiles.length === 0) {
+                fileList.innerHTML = `
+                    <div class="file-item">
+                        <div class="file-info">
+                            <i class="fas fa-file-alt file-icon"></i>
+                            <div>
+                                <div class="file-name">Nenhum arquivo selecionado</div>
+                                <div class="file-size">Faça upload dos documentos necessários</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+            
+            uploadedFiles.forEach((file, index) => {
+                const fileSize = formatFileSize(file.size);
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+                let iconClass = 'fas fa-file';
                 
-                // Verificar tamanho do arquivo (5MB)
-                if (file.size > 5 * 1024 * 1024) {
-                    alert(`O arquivo ${file.name} excede o tamanho máximo de 5MB.`);
-                    continue;
+                if (['pdf'].includes(fileExtension)) {
+                    iconClass = 'fas fa-file-pdf';
+                } else if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExtension)) {
+                    iconClass = 'fas fa-file-image';
+                } else if (['doc', 'docx'].includes(fileExtension)) {
+                    iconClass = 'fas fa-file-word';
                 }
                 
-                // Verificar tipo de arquivo
-                const validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
-                if (!validTypes.includes(file.type)) {
-                    alert(`O arquivo ${file.name} não é um tipo válido (PDF, JPG, PNG).`);
-                    continue;
-                }
-                
-                // Criar elemento de arquivo
                 const fileItem = document.createElement('div');
                 fileItem.className = 'file-item';
-                
-                // Obter ícone baseado no tipo
-                let iconClass = 'fas fa-file';
-                if (file.type === 'application/pdf') {
-                    iconClass = 'fas fa-file-pdf';
-                } else if (file.type.includes('image')) {
-                    iconClass = 'fas fa-file-image';
-                }
-                
-                // Formatar tamanho do arquivo
-                const fileSize = (file.size / 1024 / 1024).toFixed(1);
-                
                 fileItem.innerHTML = `
                     <div class="file-info">
                         <i class="${iconClass} file-icon"></i>
                         <div>
                             <div class="file-name">${file.name}</div>
-                            <div class="file-size">${fileSize} MB</div>
+                            <div class="file-size">${fileSize}</div>
                         </div>
                     </div>
-                    <button class="file-remove">
+                    <button type="button" class="file-remove" data-index="${index}">
                         <i class="fas fa-times"></i>
                     </button>
                 `;
-                
-                // Adicionar evento de remoção
-                fileItem.querySelector('.file-remove').addEventListener('click', function() {
-                    fileItem.remove();
-                });
-                
                 fileList.appendChild(fileItem);
+            });
+            
+            // Adicionar evento de remoção
+            document.querySelectorAll('.file-remove').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    uploadedFiles.splice(index, 1);
+                    updateFileList();
+                });
+            });
+        }
+        
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+        
+        // Funções para ações finais
+        function generatePdf() {
+            if (!validateForm()) return;
+            
+            // Simulação de geração de PDF
+            showToast('PDF gerado com sucesso!');
+            
+            // Simular download
+            const link = document.createElement('a');
+            link.href = '#';
+            link.download = 'ficha-cadastral.pdf';
+            link.click();
+        }
+        
+        function sendViaWhatsApp() {
+            if (!validateForm()) return;
+            
+            // Montar mensagem
+            const nome = document.getElementById('nome').value;
+            const cpf = document.getElementById('cpf').value;
+            const email = document.getElementById('email').value;
+            
+            const message = `Olá, aqui está a ficha cadastral de ${nome}\n\n` +
+                            `CPF: ${cpf}\n` +
+                            `E-mail: ${email}\n\n` +
+                            `*Formulário enviado com sucesso via WhatsApp!*`;
+            
+            // Codificar mensagem para URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Criar link do WhatsApp
+            const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
+            
+            // Abrir em nova aba
+            window.open(whatsappUrl, '_blank');
+            
+            showToast('Abrindo WhatsApp para envio...');
+        }
+        
+        function submitForm() {
+            if (validateForm()) {
+                document.getElementById('successMessage').style.display = 'block';
+                showToast('Formulário enviado com sucesso!');
+                
+                // Scroll para a mensagem de sucesso
+                document.getElementById('successMessage').scrollIntoView({ behavior: 'smooth' });
             }
         }
         
-        // Remover arquivos existentes
-        document.querySelectorAll('.file-remove').forEach(button => {
-            button.addEventListener('click', function() {
-                this.closest('.file-item').remove();
-            });
-        });
-        
-        // Enviar via WhatsApp
-        document.getElementById('btnWhatsapp').addEventListener('click', function() {
-            if (validateForm()) {
-                // Verificar se o reconhecimento facial foi realizado
-                if (!captureBtn.disabled) {
-                    alert('Por favor, realize o reconhecimento facial antes de enviar o formulário.');
-                    return;
-                }
-                
-                // Simular envio
-                const progressContainer = document.getElementById('progressContainer');
-                const progressFill = document.getElementById('progressFill');
-                const progressText = document.getElementById('progressText');
-                
-                progressContainer.style.display = 'block';
-                
-                let progress = 0;
-                const interval = setInterval(() => {
-                    progress += 5;
-                    progressFill.style.width = `${progress}%`;
-                    progressText.textContent = `${progress}% completo`;
-                    
-                    if (progress >= 100) {
-                        clearInterval(interval);
-                        
-                        // Simular geração de PDF
-                        setTimeout(() => {
-                            // Simular envio via WhatsApp
-                            const phone = "551736323016";
-                            const message = encodeURIComponent("Segue a ficha cadastral do funcionário em anexo.");
-                            const whatsappUrl = `https://wa.me/${phone}?text=${message}`;
-                            
-                            // Abrir WhatsApp
-                            window.open(whatsappUrl, '_blank');
-                            
-                            // Mostrar confirmação
-                            alert('Formulário enviado com sucesso! O PDF será enviado via WhatsApp.');
-                            progressContainer.style.display = 'none';
-                            progressFill.style.width = '0%';
-                            progressText.textContent = '0% completo';
-                        }, 1000);
-                    }
-                }, 100);
-            } else {
-                alert('Por favor, preencha todos os campos obrigatórios.');
-            }
-        });
-        
-        // Validação do formulário
+        // Funções de validação
         function validateForm() {
-            const requiredFields = document.querySelectorAll('[required]');
             let isValid = true;
             
+            // Resetar erros
+            document.querySelectorAll('.error-message').forEach(el => {
+                el.style.display = 'none';
+            });
+            document.querySelectorAll('input, select').forEach(el => {
+                el.classList.remove('input-error');
+            });
+            
+            // Validar campos obrigatórios
+            const requiredFields = document.querySelectorAll('[required]');
             requiredFields.forEach(field => {
                 if (!field.value.trim()) {
                     isValid = false;
-                    field.style.borderColor = '#e53935';
+                    field.classList.add('input-error');
                     
-                    // Remover destaque após 2 segundos
-                    setTimeout(() => {
-                        field.style.borderColor = '#ced4da';
-                    }, 2000);
+                    // Mostrar mensagem de erro se existir
+                    const errorId = field.id + '-error';
+                    const errorElement = document.getElementById(errorId);
+                    if (errorElement) {
+                        errorElement.style.display = 'block';
+                    }
                 }
             });
+            
+            // Validação especial para CPF
+            const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
+            if (cpf.length !== 11) {
+                isValid = false;
+                document.getElementById('cpf').classList.add('input-error');
+                document.getElementById('cpf-error').style.display = 'block';
+            }
+            
+            // Validação especial para e-mail
+            const email = document.getElementById('email').value;
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email && !emailRegex.test(email)) {
+                isValid = false;
+                document.getElementById('email').classList.add('input-error');
+            }
+            
+            // Verificar se foto foi capturada
+            if (!capturedPhoto) {
+                isValid = false;
+                showToast('Por favor, capture uma foto para identificação', 'error');
+            }
+            
+            // Verificar se arquivos foram enviados
+            if (uploadedFiles.length === 0) {
+                isValid = false;
+                showToast('Por favor, envie os documentos necessários', 'error');
+            }
             
             return isValid;
         }
         
-        // Formatação de campos
-        document.getElementById('cpf').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 11) value = value.substring(0, 11);
+        // Função auxiliar para mostrar mensagens
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toastMessage');
             
-            if (value.length > 9) {
-                value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
-            } else if (value.length > 6) {
-                value = value.replace(/(\d{3})(\d{3})(\d+)/, '$1.$2.$3');
-            } else if (value.length > 3) {
-                value = value.replace(/(\d{3})(\d+)/, '$1.$2');
-            }
+            toastMessage.textContent = message;
+            toast.style.backgroundColor = type === 'error' ? '#f44336' : '#4CAF50';
+            toast.style.display = 'flex';
             
-            e.target.value = value;
-        });
-        
-        document.getElementById('cep').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 8) value = value.substring(0, 8);
-            
-            if (value.length > 5) {
-                value = value.replace(/(\d{5})(\d{3})/, '$1-$2');
-            }
-            
-            e.target.value = value;
-        });
-        
-        document.getElementById('telefone').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 11) value = value.substring(0, 11);
-            
-            if (value.length > 10) {
-                value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-            } else if (value.length > 6) {
-                value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-            } else if (value.length > 2) {
-                value = value.replace(/(\d{2})(\d+)/, '($1) $2');
-            }
-            
-            e.target.value = value;
-        });
-        
-        document.getElementById('celular').addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, '');
-            if (value.length > 11) value = value.substring(0, 11);
-            
-            if (value.length > 10) {
-                value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
-            } else if (value.length > 6) {
-                value = value.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
-            } else if (value.length > 2) {
-                value = value.replace(/(\d{2})(\d+)/, '($1) $2');
-            }
-            
-            e.target.value = value;
-        });
-        
-        // Inicializar campo de data com valor padrão
-        document.getElementById('nascimento').valueAsDate = new Date(1990, 0, 1);
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
     </script>
 </body>
 </html>
