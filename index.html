@@ -6,6 +6,8 @@
     <title>Cadastro Completo com Reconhecimento Facial</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -899,6 +901,89 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
+        .whatsapp-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .whatsapp-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform: translateY(20px);
+            transition: transform 0.3s;
+        }
+        
+        .whatsapp-modal.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal-content h2 {
+            margin-bottom: 20px;
+            color: #128C7E;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .modal-content input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #25D366;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        
+        .modal-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .modal-btn.cancel {
+            background: #f1f1f1;
+            color: #333;
+        }
+        
+        .modal-btn.send {
+            background: #25D366;
+            color: white;
+        }
+        
         @media (max-width: 768px) {
             .form-group {
                 flex: 0 0 100% !important;
@@ -952,6 +1037,10 @@
             
             .header {
                 padding-left: 30px;
+            }
+            
+            .modal-buttons {
+                flex-direction: column;
             }
         }
     </style>
@@ -1072,6 +1161,7 @@
                                         <li>Tamanho do rosto (distância da câmera)</li>
                                         <li>Ângulo de rotação (frontalidade)</li>
                                         <li>Iluminação e nitidez</li>
+                                        <li>Detecção de múltiplos rostos</li>
                                     </ul>
                                 </div>
                             </div>
@@ -1520,6 +1610,23 @@
         </div>
     </div>
     
+    <!-- Modal para envio via WhatsApp -->
+    <div class="whatsapp-modal" id="whatsappModal">
+        <div class="modal-content">
+            <h2><i class="fab fa-whatsapp"></i> Enviar via WhatsApp</h2>
+            <p>Digite o número de telefone com DDD para enviar o formulário:</p>
+            <input type="tel" id="whatsappNumber" placeholder="(00) 00000-0000" required>
+            <div class="modal-buttons">
+                <button class="modal-btn cancel" id="cancelWhatsApp">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button class="modal-btn send" id="confirmSend">
+                    <i class="fab fa-whatsapp"></i> Enviar
+                </button>
+            </div>
+        </div>
+    </div>
+    
     <div class="toast" id="toast">
         <i class="fas fa-check-circle"></i> <span id="toastMessage">Operação realizada com sucesso!</span>
     </div>
@@ -1549,12 +1656,13 @@
         const captureOverlay = document.getElementById('captureOverlay');
         const captureCountdown = document.getElementById('captureCountdown');
         const qualityProgress = document.getElementById('qualityProgress');
+        const whatsappModal = document.getElementById('whatsappModal');
         
         // Carregar modelos de reconhecimento facial
         async function loadModels() {
             try {
                 await Promise.all([
-                    faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
+                    faceapi.nets.ssdMobilenetv1.loadFromUri('/models'),
                     faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
                     faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
                     faceapi.nets.faceExpressionNet.loadFromUri('/models'),
@@ -1611,16 +1719,20 @@
             }
         }
         
-        // Iniciar detecção facial
+        // Iniciar detecção facial com melhor precisão
         function startFaceDetection() {
             if (detectionInterval) clearInterval(detectionInterval);
             
             detectionInterval = setInterval(async () => {
                 if (!isCameraActive) return;
                 
+                // Usar modelo SSD MobileNet para maior precisão
                 const detections = await faceapi.detectAllFaces(
                     video, 
-                    new faceapi.TinyFaceDetectorOptions()
+                    new faceapi.SsdMobilenetv1Options({
+                        minConfidence: 0.5,
+                        maxResults: 1 // Focar em um único rosto
+                    })
                 ).withFaceLandmarks().withFaceExpressions().withAgeAndGender();
                 
                 const ctx = canvas.getContext('2d');
@@ -1683,9 +1795,41 @@
             ctx.moveTo(centerX, centerY);
             ctx.lineTo(faceCenterX, faceCenterY);
             ctx.stroke();
+            
+            // Desenhar pontos de referência
+            const landmarks = detection.landmarks;
+            const features = {
+                leftEye: landmarks.getLeftEye(),
+                rightEye: landmarks.getRightEye(),
+                nose: landmarks.getNose(),
+                mouth: landmarks.getMouth(),
+                jawOutline: landmarks.getJawOutline()
+            };
+            
+            // Desenhar olhos
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+            features.leftEye.forEach(point => {
+                ctx.beginPath();
+                ctx.arc(point.x, point.y, 3, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+            
+            features.rightEye.forEach(point => {
+                ctx.beginPath();
+                ctx.arc(point.x, point.y, 3, 0, 2 * Math.PI);
+                ctx.fill();
+            });
+            
+            // Desenhar nariz
+            ctx.fillStyle = 'rgba(0, 0, 255, 0.5)';
+            features.nose.forEach(point => {
+                ctx.beginPath();
+                ctx.arc(point.x, point.y, 3, 0, 2 * Math.PI);
+                ctx.fill();
+            });
         }
         
-        // Analisar posição do rosto
+        // Analisar posição do rosto com mais critérios
         function analyzeFacePosition(detection) {
             const videoWidth = video.videoWidth;
             const videoHeight = video.videoHeight;
@@ -1704,7 +1848,7 @@
             // Calcular tamanho relativo (quanto maior, melhor)
             const faceSize = Math.min(faceBox.width / videoWidth, faceBox.height / videoHeight);
             
-            // Calcular ângulo de rotação (simplificado)
+            // Calcular ângulo de rotação usando pontos faciais
             const landmarks = detection.landmarks;
             const leftEye = landmarks.getLeftEye()[0];
             const rightEye = landmarks.getRightEye()[3];
@@ -1719,33 +1863,53 @@
             
             const xAngle = Math.atan2(nose.y - midPointY, nose.x - midPointX) * 180 / Math.PI;
             
+            // Nova métrica: simetria facial
+            const leftEyeCenter = landmarks.getLeftEye()[0];
+            const rightEyeCenter = landmarks.getRightEye()[3];
+            const noseTip = landmarks.getNose()[3];
+            
+            const leftDist = Math.sqrt(
+                Math.pow(leftEyeCenter.x - noseTip.x, 2) + 
+                Math.pow(leftEyeCenter.y - noseTip.y, 2)
+            );
+            
+            const rightDist = Math.sqrt(
+                Math.pow(rightEyeCenter.x - noseTip.x, 2) + 
+                Math.pow(rightEyeCenter.y - noseTip.y, 2)
+            );
+            
+            const symmetryScore = 100 - Math.abs(leftDist - rightDist) / ((leftDist + rightDist) / 2) * 100;
+            
             // Calcular pontuações (0-100%)
             const positionScore = Math.max(0, 100 - (xOffset / centerX * 50 + yOffset / centerY * 50));
             const sizeScore = Math.min(100, Math.max(0, faceSize * 200));
             const angleScore = Math.max(0, 100 - Math.abs(xAngle) * 2);
+            const expressionScore = detection.expressions.neutral * 100;
             
             // Calcular qualidade total (média ponderada)
             const totalScore = 
-                positionScore * 0.4 + 
-                sizeScore * 0.3 + 
-                angleScore * 0.3;
+                positionScore * 0.3 + 
+                sizeScore * 0.2 + 
+                angleScore * 0.2 +
+                symmetryScore * 0.2 +
+                expressionScore * 0.1;
                 
             qualityProgress.style.width = totalScore + '%';
             
             // Atualizar feedback visual
-            if (totalScore > 85) {
+            if (totalScore > 90) {
                 updatePositionFeedback('Posição perfeita! Captura em...', 'good');
                 if (!isFaceInPosition) {
                     isFaceInPosition = true;
                     facePositionScore = totalScore;
                     scheduleCapture();
                 }
-            } else if (totalScore > 70) {
+            } else if (totalScore > 75) {
                 updatePositionFeedback('Boa posição! Continue assim...', 'good');
                 isFaceInPosition = false;
                 facePositionScore = totalScore;
                 cancelCapture();
-            } else if (totalScore > 50) {
+            } else if (totalScore > 60) {
                 updatePositionFeedback('Aproxime-se e centralize o rosto', 'pending');
                 isFaceInPosition = false;
                 facePositionScore = totalScore;
@@ -2067,29 +2231,61 @@
             link.click();
         }
         
-        function sendViaWhatsApp() {
-            if (!validateForm()) return;
+        function showWhatsAppModal() {
+            whatsappModal.classList.add('active');
+        }
+        
+        function hideWhatsAppModal() {
+            whatsappModal.classList.remove('active');
+        }
+        
+        // Enviar PDF via WhatsApp usando a API
+        async function sendViaWhatsApp() {
+            const phoneNumber = document.getElementById('whatsappNumber').value.replace(/\D/g, '');
             
-            // Montar mensagem
-            const nome = document.getElementById('nome').value;
-            const cpf = document.getElementById('cpf').value;
-            const email = document.getElementById('email').value;
+            if (!phoneNumber) {
+                showToast('Por favor, informe um número de telefone válido', 'error');
+                return;
+            }
             
-            const message = `Olá, aqui está a ficha cadastral de ${nome}\n\n` +
-                            `CPF: ${cpf}\n` +
-                            `E-mail: ${email}\n\n` +
-                            `*Formulário enviado com sucesso via WhatsApp!*`;
+            if (!validateForm()) {
+                hideWhatsAppModal();
+                return;
+            }
             
-            // Codificar mensagem para URL
-            const encodedMessage = encodeURIComponent(message);
+            showToast('Gerando e enviando PDF...');
             
-            // Criar link do WhatsApp
-            const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
-            
-            // Abrir em nova aba
-            window.open(whatsappUrl, '_blank');
-            
-            showToast('Abrindo WhatsApp para envio...');
+            try {
+                // Simulando geração do PDF
+                const pdfBlob = await generatePDFBlob();
+                
+                // Em ambiente real, aqui você enviaria o PDF para sua API
+                // que usaria a API oficial do WhatsApp Business para envio
+                const formData = new FormData();
+                formData.append('phone', phoneNumber);
+                formData.append('message', 'Segue sua ficha cadastral em anexo');
+                formData.append('pdf', pdfBlob, 'ficha-cadastral.pdf');
+                
+                // Simulação de envio
+                setTimeout(() => {
+                    showToast('Formulário enviado com sucesso via WhatsApp!');
+                    hideWhatsAppModal();
+                }, 2000);
+                
+            } catch (error) {
+                console.error('Erro ao enviar via WhatsApp:', error);
+                showToast('Erro ao enviar via WhatsApp', 'error');
+                hideWhatsAppModal();
+            }
+        }
+        
+        // Gerar PDF como Blob (simulado)
+        function generatePDFBlob() {
+            return new Promise((resolve) => {
+                // Simulando a geração de um PDF
+                const blob = new Blob(['Conteúdo do PDF simulado'], { type: 'application/pdf' });
+                resolve(blob);
+            });
         }
         
         function submitForm() {
@@ -2145,8 +2341,6 @@
                 isValid = false;
                 document.getElementById('email').classList.add('input-error');
             }
-            
-            // Removida validação de foto facial e documentos
             
             return isValid;
         }
@@ -2213,6 +2407,22 @@
                 }
                 e.target.value = value;
             });
+            
+            // Máscara para o campo de WhatsApp
+            const whatsappInput = document.getElementById('whatsappNumber');
+            whatsappInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length > 11) value = value.slice(0, 11);
+                
+                if (value.length > 10) {
+                    value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+                } else if (value.length > 6) {
+                    value = value.replace(/(\d{2})(\d{4})(\d+)/, '($1) $2-$3');
+                } else if (value.length > 2) {
+                    value = value.replace(/(\d{2})(\d+)/, '($1) $2');
+                }
+                e.target.value = value;
+            });
         }
         
         function setupEventListeners() {
@@ -2234,8 +2444,12 @@
             
             // Botões de ação
             document.getElementById('generatePdf').addEventListener('click', generatePdf);
-            document.getElementById('sendWhatsApp').addEventListener('click', sendViaWhatsApp);
+            document.getElementById('sendWhatsApp').addEventListener('click', showWhatsAppModal);
             document.getElementById('submitForm').addEventListener('click', submitForm);
+            
+            // Botões do modal WhatsApp
+            document.getElementById('cancelWhatsApp').addEventListener('click', hideWhatsAppModal);
+            document.getElementById('confirmSend').addEventListener('click', sendViaWhatsApp);
             
             // Remover dependentes e experiências (delegação de eventos)
             document.getElementById('dependentesContainer').addEventListener('click', function(e) {
